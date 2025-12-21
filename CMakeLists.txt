@@ -11,6 +11,13 @@ if(NOT CMAKE_BUILD_TYPE)
     SET(CMAKE_BUILD_TYPE Debug)
 endif()
 
+# 正确示例（根据平台动态设置）
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "arm64|aarch64")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mcpu=apple-m1")
+elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|amd64")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=x86-64")
+endif()
+
 # Force the use of lld for linking on non-macOS platforms
 if(UNIX AND NOT APPLE)
     SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fuse-ld=lld")
@@ -25,7 +32,7 @@ endif()
 if(UNIX AND NOT APPLE)
     SET(REQUIRED_FLAGS "-std=c++17 -fcolor-diagnostics -pipe -DASIO_STANDALONE -DGLEW_NO_GLU -DBOOST_BIMAP_DISABLE_SERIALIZATION -lglut -lGL -lSDL2 -lSDL2_mixer -ldl -lXinerama -lXext -lXrandr -lXi -lXcursor -lX11 -lXxf86vm -pthread -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-align -Wstrict-prototypes -Werror-implicit-function-declaration -Wformat=2 -Wnull-dereference -Wstrict-overflow=5 -Wno-unused-command-line-argument -Wno-unused-private-field -Wno-narrowing")
 elseif(APPLE)
-    SET(REQUIRED_FLAGS "-std=c++17 -fcolor-diagnostics -nostdinc++ -I/usr/local/Cellar/llvm/6.0.0/include/c++/v1 -L/usr/local/Cellar/llvm/6.0.0/lib -Wl,-rpath,/usr/local/Cellar/llvm/6.0.0/lib -pipe -DASIO_STANDALONE -DGLEW_NO_GLU -DBOOST_BIMAP_DISABLE_SERIALIZATION -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo -lglut -lSDL2 -lSDL2_mixer -ldl -pthread -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-align -Wstrict-prototypes -Werror-implicit-function-declaration -Wformat=2 -Wnull-dereference -Wstrict-overflow=5 -Wno-unused-private-field -Wno-unused-command-line-argument -Wno-narrowing")
+    SET(REQUIRED_FLAGS "-std=c++17 -fcolor-diagnostics -nostdinc++ -I/opt/homebrew/Cellar/llvm/20.1.4/include/c++/v1 -L/opt/homebrew/Cellar/llvm/20.1.4/lib -Wl,-rpath,/opt/homebrew/Cellar/llvm/20.1.4/lib -include boost_compat.h -pipe -DASIO_STANDALONE -DGLEW_NO_GLU -DBOOST_BIMAP_DISABLE_SERIALIZATION -DBOOST_NO_CXX98_FUNCTION_BASE -DBOOST_NO_STD_UNARY_FUNCTION -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo -framework Metal -ldl -pthread -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-align -Wstrict-prototypes -Werror-implicit-function-declaration -Wformat=2 -Wnull-dereference -Wstrict-overflow=5 -Wno-unused-private-field -Wno-unused-command-line-argument -Wno-narrowing")
 elseif(WIN32)
     SET(REQUIRED_FLAGS "/std:c++17 /GX /D ASIO_STANDALONE /D GLEW_NO_GLU /D BOOST_BIMAP_DISABLE_SERIALIZATION /W4 -Wshadow -Wpointer-arith -Wcast-align -Wstrict-prototypes -Werror-implicit-function-declaration -Wformat=2 -Wnull-dereference -Wstrict-overflow=5 -Wno-unused-private-field -Wno-unused-command-line-argument -Wno-narrowing")
 else()
@@ -47,11 +54,7 @@ if(NOT WIN32)
         SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=undefined")
     endif()
 
-    if(NATIVE_BUILD)
-        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
-    else()
-        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=x86-64 -mtune=generic")
-    endif()
+    # Architecture flags are now set dynamically above based on CMAKE_SYSTEM_PROCESSOR
 else()
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         SET(CMAKE_CXX_FLAGS "/Od ${REQUIRED_FLAGS}")
@@ -124,10 +127,10 @@ FILE(GLOB Packets_H      "Net/Packets/*.h")
 FILE(GLOB Helpers_H      "Net/Handlers/Helpers/*.h")
 
 # Glob dependencies
-FILE(GLOB nlnx_CPP       "../nlnx/*.cpp")
+FILE(GLOB nlnx_CPP       "./libs/nlnx/*.cpp")
 
 # Glob dependency headers
-FILE(GLOB nlnx_H         "../nlnx/*.hpp")
+FILE(GLOB nlnx_H         "./libs/nlnx/*.hpp")
 
 # Add all source files to $SOURCE_FILES for easy access
 SET(SOURCE_FILES ${Root_CPP}
@@ -171,13 +174,13 @@ SET(SOURCE_FILES ${Root_CPP}
                  ${Packets_H}
                  ${Helpers_H}
                  ${nlnx_H}
-                 "../boost/boost/bimap.hpp"
-                 "../boost/boost/container/flat_map.hpp"
-                 "../boost/boost/container/flat_set.hpp"
-                 "../boost/boost/container/static_vector.hpp"
-                 "../cpptoml/include/cpptoml.h"
-                 "../pcg-cpp/include/pcg_random.hpp"
-                 "../tinyutf8/tinyutf8.cpp")
+                 "./libs/boost/boost/bimap.hpp"
+                 "./libs/boost/boost/container/flat_map.hpp"
+                 "./libs/boost/boost/container/flat_set.hpp"
+                 "./libs/boost/boost/container/static_vector.hpp"
+                 "./libs/cpptoml/include/cpptoml.h"
+                 "./libs/pcg-cpp/include/pcg_random.hpp"
+                 "./libs/tinyutf8/lib/tinyutf8.cpp")
 
 # Adding file globs created above as libraries
 add_library(Audio         ${Audio_CPP})
@@ -205,7 +208,7 @@ add_library(Configuration "Configuration.cpp")
 
 add_library(nlnx          ${nlnx_CPP})
 
-add_library(tinyutf8      "../tinyutf8/tinyutf8.cpp")
+add_library(tinyutf8      "./libs/tinyutf8/lib/tinyutf8.cpp")
 
 # Target executable
 add_executable(JourneyClient ${SOURCE_FILES})
@@ -257,10 +260,14 @@ if(UNIX AND NOT APPLE)
     target_link_libraries(JourneyClient "${CMAKE_CURRENT_SOURCE_DIR}/../glfw/build/src/libglfw3.a")
     target_link_libraries(nlnx          "${CMAKE_CURRENT_SOURCE_DIR}/../lz4/lib/liblz4.so")
 elseif(APPLE)
-    target_link_libraries(JourneyClient "/usr/local/Cellar/freetype/2.9.1/lib/libfreetype.dylib")
-    target_link_libraries(JourneyClient "${CMAKE_CURRENT_SOURCE_DIR}/../glew/lib/libGLEW.dylib")
-    target_link_libraries(JourneyClient "${CMAKE_CURRENT_SOURCE_DIR}/../glfw/build/src/libglfw3.a")
-    target_link_libraries(nlnx          "${CMAKE_CURRENT_SOURCE_DIR}/../lz4/lib/liblz4.dylib")
+    target_link_libraries(JourneyClient "/opt/homebrew/Cellar/freetype/2.13.3/lib/libfreetype.dylib")
+    target_link_libraries(JourneyClient "/opt/homebrew/Cellar/glew/2.2.0_1/lib/libGLEW.dylib")
+    target_link_libraries(JourneyClient "-framework Metal")
+    target_link_libraries(JourneyClient "-framework QuartzCore")
+    target_link_libraries(JourneyClient "/opt/homebrew/Cellar/glfw/3.4/lib/libglfw3.a")
+    target_link_libraries(JourneyClient "/opt/homebrew/Cellar/sdl2/2.32.6/lib/libSDL2.dylib")
+    target_link_libraries(JourneyClient "/opt/homebrew/Cellar/sdl2_mixer/2.8.1_1/lib/libSDL2_mixer.dylib")
+    target_link_libraries(nlnx          "/opt/homebrew/Cellar/lz4/1.10.0/lib/liblz4.dylib")
 elseif(WIN32)
     INCLUDE(${CMAKE_ROOT}/Modules/FindOpenGL.cmake)
     SET(CMAKE_REQUIRED_LIBRARIES ${GLUT_LIBRARY} ${GL_LIBRARY})
@@ -276,23 +283,24 @@ endif()
 
 # Include directories for project dependencies
 include_directories(".")
-include_directories("..")
+include_directories("./libs")
 if(NOT APPLE)
     include_directories("../freetype/include")
 else()
-    include_directories("/usr/local/Cellar/freetype/2.9.1/include/freetype2")
+    include_directories("/opt/homebrew/Cellar/freetype/2.13.3/include/freetype2")
 endif()
-include_directories("../glew/include")
-include_directories("../glfw/include")
-include_directories("../asio/include")
+include_directories("/opt/homebrew/Cellar/glew/2.2.0_1/include")
+include_directories("/opt/homebrew/Cellar/glfw/3.4/include")
+include_directories("./libs/asio/include")
 if(NOT WIN32)
-    include_directories("../lz4/lib")
+    include_directories("./libs/lz4/lib")
 else()
-    include_directories("../lz4/include")
+    include_directories("/opt/homebrew/Cellar/lz4/1.10.0/include")
 endif()
-include_directories("../boost")
+include_directories("./libs/boost")
 include_directories("/usr/include")
-include_directories("/usr/include/SDL2")
-include_directories("../cpptoml/include")
-include_directories("../pcg-cpp/include")
-include_directories("../tinyutf8")
+include_directories("/opt/homebrew/Cellar/sdl2/2.32.6/include/SDL2")
+include_directories("/opt/homebrew/Cellar/sdl2_mixer/2.8.1_1/include/SDL2")
+include_directories("./libs/cpptoml/include")
+include_directories("./libs/pcg-cpp/include")
+include_directories("./libs/tinyutf8/include")

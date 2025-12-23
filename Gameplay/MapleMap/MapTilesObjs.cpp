@@ -23,13 +23,16 @@ TilesObjs::TilesObjs(WzNode src)
 {
     std::string tile_set = src["info"]["tS"];
     tile_set.append(".img", 4);
-    for (auto tile_node : src["tile"]) {
+    WzNode s_title = src["tile"];
+    for (auto s_tile_node = s_title.begin() ; s_tile_node != s_title.end(); ++s_tile_node ) {
+        WzNode tile_node = (*s_tile_node).second;
         Tile tile{tile_node, tile_set};
         std::int8_t z = tile.get_z();
         tiles.emplace(z, std::move(tile));
     }
-
-    for (auto obj_node : src["obj"]) {
+    WzNode s_obj = src["obj"];
+    for (auto s_obj_node = s_obj.begin() ; s_obj_node != s_obj.end(); ++s_obj_node ) {
+        WzNode obj_node = (*s_obj_node).second;
         Obj obj{obj_node};
         std::int8_t z = obj.get_z();
         objs.emplace(z, std::move(obj));

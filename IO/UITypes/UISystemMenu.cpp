@@ -38,7 +38,7 @@ UISystemMenu::UISystemMenu() : UIElement{POSITION, {WIDTH, HEIGHT}, true}
     std::int16_t y_offset = PADDING_TOP;
     for (std::uint16_t i = 0; i < NUM_BUTTONS; ++i) {
         buttons[i] = std::make_unique<MapleButton>(
-            source[BUTTON_SRC_NAMES[i]],
+            source[BUTTON_SRC_NAMES[i].data()],
             Point<std::int16_t>{BUTTON_PADDING_HORIZ, y_offset});
         y_offset += STRIDE_VERT;
     }

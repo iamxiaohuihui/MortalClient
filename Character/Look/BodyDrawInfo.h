@@ -33,7 +33,7 @@ class BodyAction
 public:
     BodyAction(WzNode src)
     {
-        stance = Stance::by_string(src["action"].get_string());
+        stance = Stance::by_string(src["action"].getString());
         frame = src["frame"];
         move = src["move"];
 

@@ -33,13 +33,15 @@ Hair::Hair(std::int32_t hairid, const BodyDrawinfo& drawinfo)
         auto stance_name = s.second;
 
         WzNode stancenode = hairnode[stance_name];
-        if (!stancenode) {
+        if (stancenode.notNullObj()) {
             continue;
         }
 
-        for (std::uint8_t frame = 0; WzNode framenode = stancenode[frame];
+        for (std::uint8_t frame = 0; ;
              ++frame) {
-            for (WzNode layernode : framenode) {
+            WzNode framenode = stancenode[frame];
+            for (auto s_layernode  = framenode.begin() ; s_layernode != framenode.end() ; ++s_layernode) {
+                WzNode layernode = (*s_layernode).second;
                 std::string layer_name = layernode.name();
                 auto layer_iter = layers_by_name.find(layer_name);
                 if (layer_iter == layers_by_name.end()) {
@@ -62,7 +64,7 @@ Hair::Hair(std::int32_t hairid, const BodyDrawinfo& drawinfo)
 
     name = WzFile::string["Eqp.img"]["Eqp"]["Hair"][std::to_string(hairid)]
                          ["name"]
-                             .get_string();
+                             .getString();
 
     constexpr std::size_t NUM_COLORS = 8;
     constexpr char const* haircolors[NUM_COLORS] = {"Black",

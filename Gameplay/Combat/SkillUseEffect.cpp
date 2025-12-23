@@ -44,8 +44,10 @@ MultiUseEffect::MultiUseEffect(WzNode src)
 {
     std::int8_t no = -1;
     WzNode sub = src["effect"];
-    while (sub) {
-        effects.push_back(sub);
+    for (auto  s_sub = sub.begin(); s_sub != sub.end(); ++s_sub)
+    {
+        /* code */
+        effects.push_back((*s_sub).second);
 
         ++no;
         sub = src["effect" + std::to_string(no)];
@@ -61,7 +63,9 @@ void MultiUseEffect::apply(Char& target) const
 
 ByLevelUseEffect::ByLevelUseEffect(WzNode src)
 {
-    for (auto sub : src["CharLevel"]) {
+    WzNode s_CharLevel = src["CharLevel"];
+    for (auto s_sub = s_CharLevel.begin() ; s_sub != s_CharLevel.end(); ++s_sub) {
+        auto sub = (*s_sub).second;
         auto level = string_conversion::or_zero<std::uint16_t>(sub.name());
         effects.emplace(level, sub["effect"]);
     }

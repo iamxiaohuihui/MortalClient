@@ -74,10 +74,10 @@ Clothing::Clothing(std::int32_t id, const BodyDrawinfo& drawinfo) : item_id(id)
     str_id.insert(0, "0", 1);
     str_id += ".img";
     WzNode src
-        = WzFile::character[equipdata.get_item_data().get_category()][str_id];
+        = WzFile::character[equipdata.get_item_data().get_category().data()][str_id];
     WzNode info = src["info"];
 
-    vslot = info["vslot"].get_string();
+    vslot = info["vslot"].getString();
 
     switch (std::int32_t standno = info["stand"]) {
     case 1:
@@ -108,16 +108,18 @@ Clothing::Clothing(std::int32_t id, const BodyDrawinfo& drawinfo) : item_id(id)
         const std::string& stancename = iter.second;
 
         WzNode stancenode = src[stancename];
-        if (!stancenode) {
+        if (stancenode.notNullObj()) {
             continue;
         }
 
-        for (std::uint8_t frame = 0; WzNode framenode = stancenode[frame];
+        for (std::uint8_t frame = 0;;
              ++frame) {
-            for (WzNode partnode : framenode) {
+                 WzNode framenode = stancenode[frame];
+            for (auto s_partnode = framenode.begin() ; s_partnode!= framenode.end() ; ++s_partnode) {
+                WzNode partnode = (*s_partnode).second;
                 std::string part = partnode.name();
-                if (!partnode
-                    || partnode.data_type() != WzNode::type::bitmap) {
+                if (partnode.notNullObj()
+                    || partnode.getNodeType() != WzNode::NodeType::BITMAP) {
                     continue;
                 }
 
@@ -134,8 +136,10 @@ Clothing::Clothing(std::int32_t id, const BodyDrawinfo& drawinfo) : item_id(id)
 
                 std::string parent;
                 Point<std::int16_t> parentpos;
-                for (const auto& mapnode : partnode["map"]) {
-                    if (mapnode.data_type() == WzNode::type::vector) {
+                WzNode s_map = partnode["map"];
+                for (auto s_mapnode =s_map.begin() ; s_mapnode!= s_map.end();++s_mapnode) {
+                    WzNode mapnode = (*s_mapnode).second;
+                    if (mapnode.getNodeType() == WzNode::NodeType::VECTOR) {
                         parent = mapnode.name();
                         parentpos = mapnode;
                     }

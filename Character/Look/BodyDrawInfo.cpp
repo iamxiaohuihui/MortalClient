@@ -28,14 +28,16 @@ void BodyDrawinfo::init()
     WzNode body_node = WzFile::character["00002000.img"];
     WzNode head_node = WzFile::character["00012000.img"];
 
-    for (WzNode stance_node : body_node) {
+    for (auto s_stance_node = body_node.begin(); s_stance_node != body_node.end() ; ++s_stance_node) {
+        WzNode stance_node = (*s_stance_node).second;
         std::string st_str = stance_node.name();
 
         std::uint16_t attack_delay = 0;
-        for (std::uint8_t frame = 0; WzNode frame_node = stance_node[frame];
+        for (std::uint8_t frame = 0; ;
              ++frame) {
+            WzNode frame_node = stance_node[frame];
             bool is_action
-                = frame_node["action"].data_type() == WzNode::type::string;
+                = frame_node["action"].getNodeType() == WzNode::NodeType::STRING;
             if (is_action) {
                 BodyAction action = frame_node;
                 body_actions[st_str][frame] = action;
@@ -57,13 +59,16 @@ void BodyDrawinfo::init()
                     Body::Layer,
                     std::unordered_map<std::string, Point<std::int16_t>>>
                     body_shift_map;
-                for (auto part_node : frame_node) {
+                for (auto s_part_node = frame_node.begin() ; s_part_node!=frame_node.end() ; ++s_part_node ) {
+                    auto part_node = (*s_part_node).second;
                     std::string part = part_node.name();
                     if (part != "delay" && part != "face") {
                         std::string z_str = part_node["z"];
                         Body::Layer z = Body::layer_by_name(z_str);
 
-                        for (auto map_node : part_node["map"]) {
+                        WzNode s_map = part_node["map"];
+                        for (auto s_map_node = s_map.begin() ; s_map_node!=s_map.end() ; ++s_map_node ) {
+                            auto map_node = (*s_map_node).second;
                             body_shift_map[z].emplace(map_node.name(),
                                                       map_node);
                         }
@@ -71,7 +76,8 @@ void BodyDrawinfo::init()
                 }
 
                 WzNode head_map = head_node[st_str][frame]["head"]["map"];
-                for (auto map_node : head_map) {
+                for (auto s_map_node = head_map.begin() ; s_map_node!=head_map.end() ; ++s_map_node ) {
+                    auto map_node = (*s_map_node).second;
                     body_shift_map[Body::HEAD].emplace(map_node.name(),
                                                        map_node);
                 }

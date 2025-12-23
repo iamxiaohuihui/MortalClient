@@ -52,15 +52,16 @@ Face::Face(std::int32_t face_id)
             expressions[Expression::DEFAULT].emplace(0, face_node["default"]);
         } else {
             WzNode exp_node = face_node[iter.second];
-            for (std::uint8_t frame = 0; WzNode framenode = exp_node[frame];
+            for (std::uint8_t frame = 0; ;
                  ++frame) {
+                    WzNode framenode = exp_node[frame];
                 expressions[exp].emplace(frame, framenode);
             }
         }
     }
 
     name = WzFile::string["Eqp.img"]["Eqp"]["Face"][face_id_str]["name"]
-               .get_string();
+               .getString();
 }
 
 void Face::draw(Expression::Id expression,

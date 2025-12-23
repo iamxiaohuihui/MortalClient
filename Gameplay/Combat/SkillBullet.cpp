@@ -41,7 +41,9 @@ BySkillLevelBullet::BySkillLevelBullet(WzNode src, std::int32_t id)
 {
     skillid = id;
 
-    for (auto sub : src["level"]) {
+    WzNode s_level = src["level"];
+    for (auto s_sub = s_level.begin() ; s_sub != s_level.end() ; ++s_sub) {
+        auto sub = (*s_sub).second;
         auto level = string_conversion::or_zero<std::int32_t>(sub.name());
         bullets[level] = sub["ball"];
     }

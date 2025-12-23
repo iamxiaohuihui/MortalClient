@@ -37,13 +37,15 @@ Body::Body(std::int32_t skin, const BodyDrawinfo& draw_info)
         const std::string& stance_name = iter.second;
 
         WzNode stance_node = bodynode[stance_name];
-        if (!stance_node) {
+        if (stance_node.notNullObj()) {
             continue;
         }
 
-        for (std::uint8_t frame = 0; WzNode frame_node = stance_node[frame];
+        for (std::uint8_t frame = 0; ;
              ++frame) {
-            for (WzNode part_node : frame_node) {
+            WzNode frame_node = stance_node[frame];
+            for (auto s_part_node = frame_node.begin(); s_part_node != frame_node.end() ; ++s_part_node ) {
+                WzNode part_node = (*s_part_node).second;
                 std::string part = part_node.name();
                 if (part != "delay" && part != "face") {
                     std::string z = part_node["z"];
@@ -70,8 +72,8 @@ Body::Body(std::int32_t skin, const BodyDrawinfo& draw_info)
                 }
             }
 
-            if (WzNode head_s_f_node
-                = head_node[stance_name][frame]["head"]) {
+            WzNode head_s_f_node= head_node[stance_name][frame]["head"];
+            if (head_s_f_node.notNullObj()) {
                 Point<std::int16_t> shift
                     = draw_info.get_head_pos(stance, frame);
 

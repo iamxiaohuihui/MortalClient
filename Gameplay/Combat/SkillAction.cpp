@@ -39,7 +39,7 @@ void RegularAction::apply(Char& target, Attack::Type atk_type) const
 
 SingleAction::SingleAction(WzNode src)
 {
-    action = src["action"]["0"].get_string();
+    action = src["action"]["0"].getString();
 }
 
 void SingleAction::apply(Char& target, Attack::Type) const
@@ -49,8 +49,8 @@ void SingleAction::apply(Char& target, Attack::Type) const
 
 TwoHAction::TwoHAction(WzNode src)
 {
-    actions[false] = src["action"]["0"].get_string();
-    actions[true] = src["action"]["1"].get_string();
+    actions[false] = src["action"]["0"].getString();
+    actions[true] = src["action"]["1"].getString();
 }
 
 void TwoHAction::apply(Char& target, Attack::Type) const
@@ -63,10 +63,11 @@ void TwoHAction::apply(Char& target, Attack::Type) const
 
 ByLevelAction::ByLevelAction(WzNode src, std::int32_t id)
 {
-    for (auto sub : src["level"]) {
+    WzNode s_level = src["level"];
+    for (auto s_sub = s_level.begin(); s_sub != s_level.end(); ++s_sub) {
         std::int32_t level
-            = string_conversion::or_zero<std::int32_t>(sub.name());
-        actions[level] = sub["action"].get_string();
+            = string_conversion::or_zero<std::int32_t>((*s_sub).second.name());
+        actions[level] = (*s_sub).second["action"].getString();
     }
 
     skillid = id;

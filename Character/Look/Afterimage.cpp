@@ -34,19 +34,20 @@ Afterimage::Afterimage(std::int32_t skill_id,
         std::string str_id = string_format::extend_id(skill_id, 7);
         src = WzFile::skill[str::concat(std::string_view(str_id).substr(0, 3),
                                         ".img")]["skill"][str_id]["afterimage"]
-                           [name][stance_name];
+                           [name.data()][stance_name.data()];
     }
 
-    if (!src) {
+    if (src.notNullObj()) {
         src = WzFile::character["Afterimage"][str::concat(name, ".img")]
-                               [level / 10][stance_name];
+                               [level / 10][stance_name.data()];
     }
 
     range = src;
     first_frame = 0;
     displayed = false;
 
-    for (WzNode sub : src) {
+    for (auto s_sub = src.begin() ; s_sub != src.end() ; ++s_sub ) {
+        WzNode sub = (*s_sub).second;
         std::uint8_t frame
             = string_conversion::or_default<std::uint8_t>(sub.name(), 255);
         if (frame < 255) {

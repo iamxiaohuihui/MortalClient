@@ -19,11 +19,11 @@
 
 namespace jrc
 {
-Charset::Charset(nl::node src, Alignment alignment) : alignment(alignment)
+Charset::Charset(WzNode src, Alignment alignment) : alignment(alignment)
 {
     for (auto sub : src) {
         std::string name = sub.name();
-        if (sub.data_type() != nl::node::type::bitmap || name.empty()) {
+        if (sub.data_type() != WzNode::type::bitmap || name.empty()) {
             continue;
         }
 

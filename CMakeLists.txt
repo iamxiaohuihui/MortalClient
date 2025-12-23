@@ -126,11 +126,6 @@ FILE(GLOB Packets_H      "Net/Packets/*.h")
 
 FILE(GLOB Helpers_H      "Net/Handlers/Helpers/*.h")
 
-# Glob dependencies
-FILE(GLOB nlnx_CPP       "./libs/nlnx/*.cpp")
-
-# Glob dependency headers
-FILE(GLOB nlnx_H         "./libs/nlnx/*.hpp")
 
 # Add all source files to $SOURCE_FILES for easy access
 SET(SOURCE_FILES ${Root_CPP}
@@ -151,7 +146,7 @@ SET(SOURCE_FILES ${Root_CPP}
                  ${UITypes_CPP}
                  ${Handlers_CPP}
                  ${Helpers_CPP}
-                 ${nlnx_CPP}
+                 ${wz_CPP}
                  "Configuration.cpp"
                  ${Root_H}
                  ${Audio_H}
@@ -173,14 +168,9 @@ SET(SOURCE_FILES ${Root_CPP}
                  ${Handlers_H}
                  ${Packets_H}
                  ${Helpers_H}
-                 ${nlnx_H}
-                 "./libs/boost/boost/bimap.hpp"
-                 "./libs/boost/boost/container/flat_map.hpp"
-                 "./libs/boost/boost/container/flat_set.hpp"
-                 "./libs/boost/boost/container/static_vector.hpp"
                  "./libs/cpptoml/include/cpptoml.h"
                  "./libs/pcg-cpp/include/pcg_random.hpp"
-                 "./libs/tinyutf8/lib/tinyutf8.cpp")
+                 "./libs/tinyutf8/include/tinyutf8.h")
 
 # Adding file globs created above as libraries
 add_library(Audio         ${Audio_CPP})
@@ -206,9 +196,7 @@ add_library(Helpers       ${Helpers_CPP})
 # Just the one file
 add_library(Configuration "Configuration.cpp")
 
-add_library(nlnx          ${nlnx_CPP})
-
-add_library(tinyutf8      "./libs/tinyutf8/lib/tinyutf8.cpp")
+# add_library(tinyutf8      "./libs/tinyutf8/lib/include/tinyutf8.")
 
 # Target executable
 add_executable(JourneyClient ${SOURCE_FILES})
@@ -249,7 +237,7 @@ target_link_libraries(JourneyClient Helpers)
 
 target_link_libraries(JourneyClient Configuration)
 
-target_link_libraries(JourneyClient nlnx)
+# target_link_libraries(JourneyClient wz)
 
 target_link_libraries(JourneyClient tinyutf8)
 
@@ -258,16 +246,17 @@ if(UNIX AND NOT APPLE)
     target_link_libraries(JourneyClient "${CMAKE_CURRENT_SOURCE_DIR}/../freetype/objs/.libs/libfreetype.so")
     target_link_libraries(JourneyClient "${CMAKE_CURRENT_SOURCE_DIR}/../glew/lib/libGLEW.so")
     target_link_libraries(JourneyClient "${CMAKE_CURRENT_SOURCE_DIR}/../glfw/build/src/libglfw3.a")
-    target_link_libraries(nlnx          "${CMAKE_CURRENT_SOURCE_DIR}/../lz4/lib/liblz4.so")
+    # target_link_libraries(nlnx          "${CMAKE_CURRENT_SOURCE_DIR}/../lz4/lib/liblz4.so")
 elseif(APPLE)
     target_link_libraries(JourneyClient "/opt/homebrew/Cellar/freetype/2.13.3/lib/libfreetype.dylib")
     target_link_libraries(JourneyClient "/opt/homebrew/Cellar/glew/2.2.0_1/lib/libGLEW.dylib")
     target_link_libraries(JourneyClient "-framework Metal")
     target_link_libraries(JourneyClient "-framework QuartzCore")
+    target_link_libraries(JourneyClient "./libs/WzTools/build/libWzTools.a")
     target_link_libraries(JourneyClient "/opt/homebrew/Cellar/glfw/3.4/lib/libglfw3.a")
     target_link_libraries(JourneyClient "/opt/homebrew/Cellar/sdl2/2.32.6/lib/libSDL2.dylib")
     target_link_libraries(JourneyClient "/opt/homebrew/Cellar/sdl2_mixer/2.8.1_1/lib/libSDL2_mixer.dylib")
-    target_link_libraries(nlnx          "/opt/homebrew/Cellar/lz4/1.10.0/lib/liblz4.dylib")
+    # target_link_libraries(nlnx          "/opt/homebrew/Cellar/lz4/1.10.0/lib/liblz4.dylib")
 elseif(WIN32)
     INCLUDE(${CMAKE_ROOT}/Modules/FindOpenGL.cmake)
     SET(CMAKE_REQUIRED_LIBRARIES ${GLUT_LIBRARY} ${GL_LIBRARY})
@@ -276,7 +265,7 @@ elseif(WIN32)
     target_link_libraries(JourneyClient "${CMAKE_CURRENT_SOURCE_DIR}/../freetype/win64/freetype.lib")
     target_link_libraries(JourneyClient "${CMAKE_CURRENT_SOURCE_DIR}/../glew/lib/Release/x64/glew32.lib")
     target_link_libraries(JourneyClient "${CMAKE_CURRENT_SOURCE_DIR}/../glfw/lib-vc2015/glfw3.lib")
-    target_link_libraries(nlnx          "${CMAKE_CURRENT_SOURCE_DIR}/../lz4/dll/liblz4.lib")
+    # target_link_libraries(wz          "${CMAKE_CURRENT_SOURCE_DIR}/../lz4/dll/liblz4.lib")
 else()
     message(FATAL_ERROR "Unrecognized platform")
 endif()
@@ -297,10 +286,11 @@ if(NOT WIN32)
 else()
     include_directories("/opt/homebrew/Cellar/lz4/1.10.0/include")
 endif()
-include_directories("./libs/boost")
 include_directories("/usr/include")
+include_directories("/opt/homebrew/Cellar/boost/1.88.0/include")
 include_directories("/opt/homebrew/Cellar/sdl2/2.32.6/include/SDL2")
 include_directories("/opt/homebrew/Cellar/sdl2_mixer/2.8.1_1/include/SDL2")
 include_directories("./libs/cpptoml/include")
 include_directories("./libs/pcg-cpp/include")
 include_directories("./libs/tinyutf8/include")
+include_directories("./libs/WzTools")

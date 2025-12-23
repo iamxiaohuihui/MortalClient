@@ -17,15 +17,14 @@
 //////////////////////////////////////////////////////////////////////////////
 #include "ItemData.h"
 
-#include "nlnx/node.hpp"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
 ItemData::ItemData(std::int32_t id) : item_id(id)
 {
-    nl::node src;
-    nl::node strsrc;
+    WzNode src;
+    WzNode strsrc;
 
     std::string str_prefix = std::to_string(item_id / 10000);
     str_prefix.insert(0, "0", 1);
@@ -37,39 +36,39 @@ ItemData::ItemData(std::int32_t id) : item_id(id)
     switch (item_id / 1000000) {
     case 1:
         category = get_equip_category_str(item_id);
-        src = nl::nx::character[category][str_id + ".img"]["info"];
-        strsrc = nl::nx::string["Eqp.img"]["Eqp"][category]
+        src = WzFile::character[category][str_id + ".img"]["info"];
+        strsrc = WzFile::string["Eqp.img"]["Eqp"][category]
                                [std::to_string(item_id)];
         break;
     case 2:
         category = "Consume";
-        src = nl::nx::item["Consume"][str_prefix][str_id]["info"];
-        strsrc = nl::nx::string["Consume.img"][std::to_string(item_id)];
+        src = WzFile::item["Consume"][str_prefix][str_id]["info"];
+        strsrc = WzFile::string["Consume.img"][std::to_string(item_id)];
         break;
     case 3:
         category = "Install";
-        src = nl::nx::item["Install"][str_prefix][str_id]["info"];
-        strsrc = nl::nx::string["Ins.img"][std::to_string(item_id)];
+        src = WzFile::item["Install"][str_prefix][str_id]["info"];
+        strsrc = WzFile::string["Ins.img"][std::to_string(item_id)];
         break;
     case 4:
         category = "Etc";
-        src = nl::nx::item["Etc"][str_prefix][str_id]["info"];
-        strsrc = nl::nx::string["Etc.img"]["Etc"][std::to_string(item_id)];
+        src = WzFile::item["Etc"][str_prefix][str_id]["info"];
+        strsrc = WzFile::string["Etc.img"]["Etc"][std::to_string(item_id)];
         break;
     case 5:
         category = "Cash";
-        src = nl::nx::item["Cash"][str_prefix][str_id]["info"];
-        strsrc = nl::nx::string["Cash.img"][std::to_string(item_id)];
+        src = WzFile::item["Cash"][str_prefix][str_id]["info"];
+        strsrc = WzFile::string["Cash.img"][std::to_string(item_id)];
         break;
     }
 
-    if (src) {
+    if (src.notNullObj()) {
         icons[false] = src["icon"];
         icons[true] = src["iconRaw"];
         price = src["price"];
 
-        name = strsrc["name"].get_string();
-        desc = strsrc["desc"].get_string();
+        name = strsrc["name"].getString();
+        desc = strsrc["desc"].getString();
 
         valid = true;
     } else {

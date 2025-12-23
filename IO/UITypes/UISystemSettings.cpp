@@ -22,14 +22,14 @@
 #include "../../Net/Packets/GameplayPackets.h"
 #include "../Components/MapleButton.h"
 #include "../UI.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
 UISystemSettings::UISystemSettings()
     : UIDragElement<Configuration::PositionOf::SYSTEM_SETTINGS>{DRAG_AREA}
 {
-    nl::node source = nl::nx::ui["UIWindow2.img"]["SysOpt"];
+    WzNode source = WzFile::ui["UIWindow2.img"]["SysOpt"];
 
     sprites.emplace_back(source["backgrnd"]);
     sprites.emplace_back(source["backgrnd2"]);
@@ -38,7 +38,7 @@ UISystemSettings::UISystemSettings()
         = std::make_unique<MapleButton>(source["BtCancle" /* [sic] */]);
     buttons[BT_OK] = std::make_unique<MapleButton>(source["BtOK"]);
 
-    nl::node scroll_src = source["scroll"];
+    WzNode scroll_src = source["scroll"];
     sliders[PIC_QUALITY] = {scroll_src,
                             {SLIDER_LEFT, SLIDER_RIGHT},
                             SLIDER_Y_OFFSET,

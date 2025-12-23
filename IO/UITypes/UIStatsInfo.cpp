@@ -20,7 +20,7 @@
 #include "../../Net/Packets/PlayerPackets.h"
 #include "../Components/MapleButton.h"
 #include "../UI.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 #include <cstdlib>
 
@@ -29,9 +29,9 @@ namespace jrc
 UIStatsinfo::UIStatsinfo(const CharStats& st)
     : UIDragElement<Configuration::PositionOf::STATS>{{212, 20}}, stats{st}
 {
-    nl::node base_src = nl::nx::ui["UIWindow4.img"]["Stat"];
-    nl::node src = base_src["main"];
-    nl::node detail = base_src["detail"];
+    WzNode base_src = WzFile::ui["UIWindow4.img"]["Stat"];
+    WzNode src = base_src["main"];
+    WzNode detail = base_src["detail"];
 
     sprites.emplace_back(src["backgrnd"]);
     sprites.emplace_back(src["backgrnd2"]);

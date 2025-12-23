@@ -20,8 +20,7 @@
 #include "../Constants.h"
 #include "../Data/WeaponData.h"
 #include "../Util/Misc.h"
-#include "nlnx/node.hpp"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 #include <algorithm>
 #include <cmath>
@@ -374,9 +373,9 @@ void Char::init()
 {
     CharLook::init();
 
-    nl::node src = nl::nx::effect["BasicEff.img"];
+    WzNode src = WzFile::effect["BasicEff.img"];
     for (auto path : CharEffect::PATHS) {
-        char_effects.emplace(path.first, src.resolve(path.second));
+        char_effects.emplace(path.first, src.resolve(path.second.data()));
     }
 }
 

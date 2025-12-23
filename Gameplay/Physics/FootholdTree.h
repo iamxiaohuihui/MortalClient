@@ -27,7 +27,7 @@ namespace jrc
 class Footholdtree
 {
 public:
-    Footholdtree(nl::node source);
+    Footholdtree(WzNode source);
     Footholdtree();
 
     void draw(Point<std::int16_t> pos) const;

@@ -19,13 +19,13 @@
 
 #include "../../Graphics/Sprite.h"
 #include "../Components/MapleButton.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
 UILoginNotice::UILoginNotice(Message id)
 {
-    nl::node notice = nl::nx::ui["Login.img"]["Notice"];
+    WzNode notice = WzFile::ui["Login.img"]["Notice"];
 
     background = notice["backgrnd"][id == BLOCKED_ID ? "1" : "0"];
     text = {notice["text"][id], {17, 13}};

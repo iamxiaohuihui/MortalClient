@@ -24,15 +24,15 @@
 #include "../UI.h"
 #include "../UITypes/UICharSelect.h"
 #include "../UITypes/UILoginNotice.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
 UICharCreation::UICharCreation()
 {
-    nl::node src = nl::nx::ui["Login.img"];
-    nl::node bg_src = nl::nx::map["Back"]["login.img"]["back"];
-    nl::node cr_src = src["NewChar"];
+    WzNode src = WzFile::ui["Login.img"];
+    WzNode bg_src = WzFile::map["Back"]["login.img"]["back"];
+    WzNode cr_src = src["NewChar"];
 
     sky = bg_src["2"];
     cloud = bg_src["27"];
@@ -141,10 +141,10 @@ UICharCreation::UICharCreation()
     weapon_name = {Text::A11M, Text::CENTER, Text::BLACK};
     gender_name = {Text::A11M, Text::CENTER, Text::BLACK};
 
-    nl::node mkinfo = nl::nx::etc["MakeCharInfo.img"]["Info"];
+    WzNode mkinfo = WzFile::etc["MakeCharInfo.img"]["Info"];
     for (auto i = 0; i < 2; ++i) {
         bool f;
-        nl::node mk_n;
+        WzNode mk_n;
         if (i == 0) {
             f = true;
             mk_n = mkinfo["CharFemale"];
@@ -153,10 +153,12 @@ UICharCreation::UICharCreation()
             mk_n = mkinfo["CharMale"];
         }
 
-        for (auto sub_node : mk_n) {
-            int num = stoi(sub_node.name());
-            for (auto id_node : sub_node) {
-                int value = id_node;
+        for (auto s_sub_node = mk_n.begin() ; s_sub_node != mk_n.end() ;++s_sub_node) {
+            auto sub_node = (*s_sub_node).second;
+            int num = std::stoi(sub_node.name());
+            for (auto s_id_node = sub_node.begin() ; s_id_node != sub_node.end() ; ++s_id_node) {
+                auto id_node = (*s_id_node).second;
+                int value = id_node.getInteger();
                 switch (num) {
                 case 0:
                     faces[f].push_back(value);

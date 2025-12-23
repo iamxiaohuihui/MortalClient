@@ -18,24 +18,23 @@
 #include "JobData.h"
 
 #include "../Util/Misc.h"
-#include "nlnx/node.hpp"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
 JobData::JobData(std::int32_t id)
 {
     std::string strid = string_format::extend_id(id, 3);
-    nl::node src = nl::nx::skill[strid + ".img"];
-    nl::node strsrc = nl::nx::string["Skill.img"][strid];
+    WzNode src = WzFile::skill[strid + ".img"];
+    WzNode strsrc = WzFile::string["Skill.img"][strid];
 
     icon = src["info"]["icon"];
 
-    name = strsrc["bookName"].get_string();
+    name = strsrc["bookName"].getString();
 
-    for (nl::node sub : src["skill"]) {
-        std::int32_t skill_id
-            = string_conversion::or_zero<std::int32_t>(sub.name());
+    WzNode node_skills = src["skill"];
+    for (auto sub = node_skills.begin() ; sub != node_skills.end() ; ++ sub) {
+        std::int32_t skill_id = (*sub).second.getInteger();
         if (skill_id == 0)
             continue;
 

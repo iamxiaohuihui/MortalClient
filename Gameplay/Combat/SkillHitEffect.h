@@ -37,7 +37,7 @@ protected:
     class Effect
     {
     public:
-        Effect(nl::node src)
+        Effect(WzNode src)
         {
             animation = src;
             pos = src["pos"];
@@ -69,7 +69,7 @@ public:
 class SingleHitEffect : public SkillHitEffect
 {
 public:
-    SingleHitEffect(nl::node src);
+    SingleHitEffect(WzNode src);
 
     void apply(const AttackUser& user, Mob& target) const override;
 
@@ -81,7 +81,7 @@ private:
 class TwoHHitEffect : public SkillHitEffect
 {
 public:
-    TwoHHitEffect(nl::node src);
+    TwoHHitEffect(WzNode src);
 
     void apply(const AttackUser& user, Mob& target) const override;
 
@@ -93,7 +93,7 @@ private:
 class ByLevelHitEffect : public SkillHitEffect
 {
 public:
-    ByLevelHitEffect(nl::node src);
+    ByLevelHitEffect(WzNode src);
 
     void apply(const AttackUser& user, Mob& target) const override;
 
@@ -105,7 +105,7 @@ private:
 class ByLevelTwoHHitEffect : public SkillHitEffect
 {
 public:
-    ByLevelTwoHHitEffect(nl::node src);
+    ByLevelTwoHHitEffect(WzNode src);
 
     void apply(const AttackUser& user, Mob& target) const override;
 
@@ -117,7 +117,7 @@ private:
 class BySkillLevelHitEffect : public SkillHitEffect
 {
 public:
-    BySkillLevelHitEffect(nl::node src);
+    BySkillLevelHitEffect(WzNode src);
 
     void apply(const AttackUser& user, Mob& target) const override;
 

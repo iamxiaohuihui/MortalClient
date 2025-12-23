@@ -17,7 +17,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #pragma once
 #include "../Util/Misc.h"
-#include "nlnx/node.hpp"
+#include "Wz.h"
 
 #include <cmath>
 #include <limits>
@@ -32,7 +32,7 @@ class Point
 {
 public:
     //! Construct a point from a vector property.
-    Point(const nl::node& src) noexcept
+    Point(const WzNode& src) noexcept
     {
         a = static_cast<T>(src.x());
         b = static_cast<T>(src.y());

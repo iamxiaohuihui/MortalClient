@@ -18,24 +18,24 @@
 #include "BodyDrawInfo.h"
 
 #include "Body.h"
-#include "nlnx/node.hpp"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
+#include "Wz.h"
 
 namespace jrc
 {
 void BodyDrawinfo::init()
 {
-    nl::node body_node = nl::nx::character["00002000.img"];
-    nl::node head_node = nl::nx::character["00012000.img"];
+    WzNode body_node = WzFile::character["00002000.img"];
+    WzNode head_node = WzFile::character["00012000.img"];
 
-    for (nl::node stance_node : body_node) {
+    for (WzNode stance_node : body_node) {
         std::string st_str = stance_node.name();
 
         std::uint16_t attack_delay = 0;
-        for (std::uint8_t frame = 0; nl::node frame_node = stance_node[frame];
+        for (std::uint8_t frame = 0; WzNode frame_node = stance_node[frame];
              ++frame) {
             bool is_action
-                = frame_node["action"].data_type() == nl::node::type::string;
+                = frame_node["action"].data_type() == WzNode::type::string;
             if (is_action) {
                 BodyAction action = frame_node;
                 body_actions[st_str][frame] = action;
@@ -70,7 +70,7 @@ void BodyDrawinfo::init()
                     }
                 }
 
-                nl::node head_map = head_node[st_str][frame]["head"]["map"];
+                WzNode head_map = head_node[st_str][frame]["head"]["map"];
                 for (auto map_node : head_map) {
                     body_shift_map[Body::HEAD].emplace(map_node.name(),
                                                        map_node);

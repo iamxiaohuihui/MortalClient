@@ -18,7 +18,7 @@
 #include "Icon.h"
 
 #include "Charset.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
@@ -41,7 +41,7 @@ void Icon::draw(Point<std::int16_t> position) const
 
     if (showcount) {
         static const Charset countset
-            = {nl::nx::ui["Basic.img"]["ItemNo"], Charset::LEFT};
+            = {WzFile::ui["Basic.img"]["ItemNo"], Charset::LEFT};
         std::int16_t tempc = count - (dragged ? 1 : 0);
         countset.draw(std::to_string(tempc),
                       position + Point<std::int16_t>{0, 20});

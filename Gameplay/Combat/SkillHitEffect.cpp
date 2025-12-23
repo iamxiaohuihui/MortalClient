@@ -21,7 +21,7 @@
 
 namespace jrc
 {
-SingleHitEffect::SingleHitEffect(nl::node src) : effect(src["hit"]["0"])
+SingleHitEffect::SingleHitEffect(WzNode src) : effect(src["hit"]["0"])
 {
 }
 
@@ -30,7 +30,7 @@ void SingleHitEffect::apply(const AttackUser& user, Mob& target) const
     effect.apply(target, user.flip);
 }
 
-TwoHHitEffect::TwoHHitEffect(nl::node src)
+TwoHHitEffect::TwoHHitEffect(WzNode src)
     : effects(src["hit"]["0"], src["hit"]["1"])
 {
 }
@@ -40,12 +40,13 @@ void TwoHHitEffect::apply(const AttackUser& user, Mob& target) const
     effects[user.second_weapon].apply(target, user.flip);
 }
 
-ByLevelHitEffect::ByLevelHitEffect(nl::node src)
+ByLevelHitEffect::ByLevelHitEffect(WzNode src)
 {
-    for (auto sub : src["CharLevel"]) {
+    WzNode node_CharLevel = src["CharLevel"];
+    for (auto node_sub = node_CharLevel.begin()  ; node_sub != node_CharLevel.end() ; ++node_sub ) {
         std::uint16_t level
-            = string_conversion::or_zero<std::uint16_t>(sub.name());
-        effects.emplace(level, sub["hit"]["0"]);
+            = string_conversion::or_zero<std::uint16_t>((*node_sub).second.name());
+        effects.emplace(level, (*node_sub).second["hit"]["0"]);
     }
 }
 
@@ -63,14 +64,15 @@ void ByLevelHitEffect::apply(const AttackUser& user, Mob& target) const
     iter->second.apply(target, user.flip);
 }
 
-ByLevelTwoHHitEffect::ByLevelTwoHHitEffect(nl::node src)
+ByLevelTwoHHitEffect::ByLevelTwoHHitEffect(WzNode src)
 {
-    for (auto sub : src["CharLevel"]) {
-        auto level = string_conversion::or_zero<std::uint16_t>(sub.name());
+    WzNode node_CharLevel = src["CharLevel"];
+    for (auto node_sub = node_CharLevel.begin()  ; node_sub != node_CharLevel.end() ; ++node_sub ) {
+        auto level = string_conversion::or_zero<std::uint16_t>((*node_sub).second.name());
         effects.emplace(
             std::piecewise_construct,
             std::forward_as_tuple(level),
-            std::forward_as_tuple(sub["hit"]["0"], sub["hit"]["1"]));
+            std::forward_as_tuple((*node_sub).second["hit"]["0"], (*node_sub).second["hit"]["1"]));
     }
 }
 
@@ -88,11 +90,12 @@ void ByLevelTwoHHitEffect::apply(const AttackUser& user, Mob& target) const
     iter->second[user.second_weapon].apply(target, user.flip);
 }
 
-BySkillLevelHitEffect::BySkillLevelHitEffect(nl::node src)
+BySkillLevelHitEffect::BySkillLevelHitEffect(WzNode src)
 {
-    for (auto sub : src["level"]) {
-        auto level = string_conversion::or_zero<std::int32_t>(sub.name());
-        effects.emplace(level, sub["hit"]["0"]);
+    WzNode node_Level = src["level"];
+    for (auto node_sub = node_Level.begin()  ; node_sub != node_Level.end() ; ++node_sub ) {
+        auto level = string_conversion::or_zero<std::int32_t>((*node_sub).second.name());
+        effects.emplace(level, (*node_sub).second["hit"]["0"]);
     }
 }
 

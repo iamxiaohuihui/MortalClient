@@ -19,8 +19,8 @@
 
 #include "../../Data/EquipData.h"
 #include "../../Data/WeaponData.h"
-#include "nlnx/node.hpp"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
+#include "Wz.h"
 
 #include <string>
 #include <unordered_set>
@@ -73,9 +73,9 @@ Clothing::Clothing(std::int32_t id, const BodyDrawinfo& drawinfo) : item_id(id)
     std::string str_id = std::to_string(item_id);
     str_id.insert(0, "0", 1);
     str_id += ".img";
-    nl::node src
-        = nl::nx::character[equipdata.get_item_data().get_category()][str_id];
-    nl::node info = src["info"];
+    WzNode src
+        = WzFile::character[equipdata.get_item_data().get_category()][str_id];
+    WzNode info = src["info"];
 
     vslot = info["vslot"].get_string();
 
@@ -107,17 +107,17 @@ Clothing::Clothing(std::int32_t id, const BodyDrawinfo& drawinfo) : item_id(id)
         Stance::Id stance = iter.first;
         const std::string& stancename = iter.second;
 
-        nl::node stancenode = src[stancename];
+        WzNode stancenode = src[stancename];
         if (!stancenode) {
             continue;
         }
 
-        for (std::uint8_t frame = 0; nl::node framenode = stancenode[frame];
+        for (std::uint8_t frame = 0; WzNode framenode = stancenode[frame];
              ++frame) {
-            for (nl::node partnode : framenode) {
+            for (WzNode partnode : framenode) {
                 std::string part = partnode.name();
                 if (!partnode
-                    || partnode.data_type() != nl::node::type::bitmap) {
+                    || partnode.data_type() != WzNode::type::bitmap) {
                     continue;
                 }
 
@@ -135,13 +135,13 @@ Clothing::Clothing(std::int32_t id, const BodyDrawinfo& drawinfo) : item_id(id)
                 std::string parent;
                 Point<std::int16_t> parentpos;
                 for (const auto& mapnode : partnode["map"]) {
-                    if (mapnode.data_type() == nl::node::type::vector) {
+                    if (mapnode.data_type() == WzNode::type::vector) {
                         parent = mapnode.name();
                         parentpos = mapnode;
                     }
                 }
 
-                // nl::node mapnode = partnode["map"];
+                // WzNode mapnode = partnode["map"];
                 Point<std::int16_t> shift;
                 switch (equip_slot) {
                 case Equipslot::FACEACC:

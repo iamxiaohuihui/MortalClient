@@ -37,7 +37,7 @@ void RegularAction::apply(Char& target, Attack::Type atk_type) const
     target.attack(degenerate);
 }
 
-SingleAction::SingleAction(nl::node src)
+SingleAction::SingleAction(WzNode src)
 {
     action = src["action"]["0"].get_string();
 }
@@ -47,7 +47,7 @@ void SingleAction::apply(Char& target, Attack::Type) const
     target.attack(action);
 }
 
-TwoHAction::TwoHAction(nl::node src)
+TwoHAction::TwoHAction(WzNode src)
 {
     actions[false] = src["action"]["0"].get_string();
     actions[true] = src["action"]["1"].get_string();
@@ -61,7 +61,7 @@ void TwoHAction::apply(Char& target, Attack::Type) const
     target.attack(action);
 }
 
-ByLevelAction::ByLevelAction(nl::node src, std::int32_t id)
+ByLevelAction::ByLevelAction(WzNode src, std::int32_t id)
 {
     for (auto sub : src["level"]) {
         std::int32_t level

@@ -19,7 +19,7 @@
 
 namespace jrc
 {
-SliderHoriz::SliderHoriz(nl::node src,
+SliderHoriz::SliderHoriz(WzNode src,
                          Range<std::int16_t> horiz,
                          std::int16_t y_pos,
                          std::int16_t unit_cols,

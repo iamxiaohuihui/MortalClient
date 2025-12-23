@@ -29,22 +29,22 @@ class PassiveBuff
 public:
     virtual ~PassiveBuff() = default;
 
-    virtual bool is_applicable(CharStats& stats, nl::node level) const = 0;
-    virtual void apply_to(CharStats& stats, nl::node level) const = 0;
+    virtual bool is_applicable(CharStats& stats, WzNode level) const = 0;
+    virtual void apply_to(CharStats& stats, WzNode level) const = 0;
 };
 
 //! Abstract base for passives without conditions.
 class ConditionlessBuff : public PassiveBuff
 {
 public:
-    bool is_applicable(CharStats& stats, nl::node level) const final;
+    bool is_applicable(CharStats& stats, WzNode level) const final;
 };
 
 //! Buff for angel blessing/blessing of the spirit.
 class AngelBlessingBuff : public ConditionlessBuff
 {
 public:
-    void apply_to(CharStats& stats, nl::node level) const override;
+    void apply_to(CharStats& stats, WzNode level) const override;
 };
 
 template<Weapon::Type... W>
@@ -52,23 +52,23 @@ template<Weapon::Type... W>
 class WeaponMasteryBuff : public PassiveBuff
 {
 public:
-    bool is_applicable(CharStats& stats, nl::node level) const override;
-    void apply_to(CharStats& stats, nl::node level) const override;
+    bool is_applicable(CharStats& stats, WzNode level) const override;
+    void apply_to(CharStats& stats, WzNode level) const override;
 };
 
 //! Buff for Achilles.
 class AchillesBuff : public ConditionlessBuff
 {
 public:
-    void apply_to(CharStats& stats, nl::node level) const override;
+    void apply_to(CharStats& stats, WzNode level) const override;
 };
 
 //! Buff for Berserk.
 class BerserkBuff : public PassiveBuff
 {
 public:
-    bool is_applicable(CharStats& stats, nl::node level) const override;
-    void apply_to(CharStats& stats, nl::node level) const override;
+    bool is_applicable(CharStats& stats, WzNode level) const override;
+    void apply_to(CharStats& stats, WzNode level) const override;
 };
 
 //! Collection of passive buffs.

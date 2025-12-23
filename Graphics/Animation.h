@@ -29,7 +29,7 @@ namespace jrc
 class Frame
 {
 public:
-    Frame(nl::node src);
+    Frame(WzNode src);
     Frame() noexcept;
 
     void draw(const DrawArgument& args) const;
@@ -59,7 +59,7 @@ private:
 class Animation
 {
 public:
-    Animation(nl::node source);
+    Animation(WzNode source);
     Animation() noexcept;
 
     bool update();

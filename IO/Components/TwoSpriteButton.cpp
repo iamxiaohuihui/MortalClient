@@ -19,8 +19,8 @@
 
 namespace jrc
 {
-TwoSpriteButton::TwoSpriteButton(nl::node nsrc,
-                                 nl::node ssrc,
+TwoSpriteButton::TwoSpriteButton(WzNode nsrc,
+                                 WzNode ssrc,
                                  Point<std::int16_t> pos)
     : textures(ssrc, nsrc)
 {
@@ -29,7 +29,7 @@ TwoSpriteButton::TwoSpriteButton(nl::node nsrc,
     active = true;
 }
 
-TwoSpriteButton::TwoSpriteButton(nl::node nsrc, nl::node ssrc)
+TwoSpriteButton::TwoSpriteButton(WzNode nsrc, WzNode ssrc)
     : TwoSpriteButton(nsrc, ssrc, {})
 {
 }

@@ -21,14 +21,15 @@
 
 namespace jrc
 {
-Footholdtree::Footholdtree(nl::node src)
+Footholdtree::Footholdtree(WzNode src)
 {
     std::int16_t leftw = 30000;
     std::int16_t rightw = -30000;
     std::int16_t botb = -30000;
     std::int16_t topb = 30000;
 
-    for (const auto& basef : src) {
+    for (auto s_basef = src.begin() ; s_basef != src.end() ; ++s_basef) {
+        auto  basef = (*s_basef).second;
         std::uint8_t layer;
         try {
             layer = static_cast<std::uint8_t>(std::stoi(basef.name()));
@@ -37,8 +38,10 @@ Footholdtree::Footholdtree(nl::node src)
             continue;
         }
 
-        for (const auto& midf : basef) {
-            for (const auto& lastf : midf) {
+        for (auto s_midf = basef.begin(); s_midf != basef.end() ; ++s_midf  ) {
+            auto midf =(*s_midf).second;
+            for ( auto s_lastf = midf.begin() ; s_lastf != midf.end() ; ++s_lastf ) {
+                auto lastf = (*s_lastf).second;
                 std::uint16_t id;
                 try {
                     id = static_cast<std::uint16_t>(std::stoi(lastf.name()));

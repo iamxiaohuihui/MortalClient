@@ -18,7 +18,7 @@
 #pragma once
 #include "../Error.h"
 #include "../Template/EnumMap.h"
-#include "nlnx/node.hpp"
+#include "Wz.h"
 
 #include <SDL.h>
 #include <SDL_mixer.h>
@@ -53,7 +53,7 @@ public:
 
     Sound() noexcept;
     Sound(Name name) noexcept;
-    Sound(nl::node src) noexcept;
+    Sound(WzNode src) noexcept;
 
     void play() const noexcept;
 
@@ -67,8 +67,8 @@ public:
 private:
     std::size_t id;
 
-    static std::size_t add_sound(nl::node src) noexcept;
-    static void add_sound(Sound::Name name, nl::node src) noexcept;
+    static std::size_t add_sound(WzNode src) noexcept;
+    static void add_sound(Sound::Name name, WzNode src) noexcept;
 
     static std::unordered_map<std::size_t, Mix_Chunk*> samples;
     static EnumMap<Name, std::size_t> sound_ids;

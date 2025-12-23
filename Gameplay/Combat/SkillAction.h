@@ -48,7 +48,7 @@ public:
 class SingleAction : public SkillAction
 {
 public:
-    SingleAction(nl::node src);
+    SingleAction(WzNode src);
 
     void apply(Char& target, Attack::Type atype) const override;
 
@@ -59,7 +59,7 @@ private:
 class TwoHAction : public SkillAction
 {
 public:
-    TwoHAction(nl::node src);
+    TwoHAction(WzNode src);
 
     void apply(Char& target, Attack::Type atype) const override;
 
@@ -70,7 +70,7 @@ private:
 class ByLevelAction : public SkillAction
 {
 public:
-    ByLevelAction(nl::node src, std::int32_t skillid);
+    ByLevelAction(WzNode src, std::int32_t skillid);
 
     void apply(Char& target, Attack::Type atype) const override;
 

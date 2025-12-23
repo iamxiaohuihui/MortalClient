@@ -19,14 +19,13 @@
 
 #include "../../Data/SkillData.h"
 #include "../../Util/Misc.h"
-#include "nlnx/node.hpp"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
 SkillTooltip::SkillTooltip() : line(318, Geometry::WHITE, 1.0f)
 {
-    nl::node itemtt = nl::nx::ui["UIToolTip.img"]["Item"];
+    WzNode itemtt = WzFile::ui["UIToolTip.img"]["Item"];
 
     frame = itemtt["Frame2"];
     base = itemtt["ItemIcon"]["base"];

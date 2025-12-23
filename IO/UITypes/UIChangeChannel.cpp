@@ -21,7 +21,7 @@
 #include "../../Net/Packets/GameplayPackets.h"
 #include "../Components/MapleButton.h"
 #include "../UI.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
@@ -29,7 +29,7 @@ UIChangeChannel::UIChangeChannel()
     : UIDragElement<Configuration::PositionOf::CHANGE_CHANNEL>{DRAG_AREA},
       selected_channel{Stage::get().get_channel()}
 {
-    nl::node source = nl::nx::ui["UIWindow2.img"]["Channel"];
+    WzNode source = WzFile::ui["UIWindow2.img"]["Channel"];
 
     sprites.emplace_back(source["backgrnd"]);
     sprites.emplace_back(source["backgrnd2"]);
@@ -37,7 +37,7 @@ UIChangeChannel::UIChangeChannel()
     sprites.emplace_back(source["world"][Stage::get().get_world()],
                          DrawArgument{WORLD_BADGE_OFFSET});
 
-    nl::node ch_src = source["ch"];
+    WzNode ch_src = source["ch"];
     const std::uint8_t num_channels = Stage::get().get_channel_count();
     auto ch_pos = CH_SPRITE_OFFSET;
     for (unsigned row = 0; row < ROWS; ++row) {

@@ -24,12 +24,12 @@ Sprite::Sprite(const Animation& a, const DrawArgument& s_args)
 {
 }
 
-Sprite::Sprite(nl::node src, const DrawArgument& s_args)
+Sprite::Sprite(WzNode src, const DrawArgument& s_args)
     : animation(src), state_args(s_args)
 {
 }
 
-Sprite::Sprite(nl::node src) : Sprite(src, {})
+Sprite::Sprite(WzNode src) : Sprite(src, {})
 {
 }
 

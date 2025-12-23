@@ -72,7 +72,7 @@ private:
 
     Sprite empty_slot;
     Charset level_set;
-    nl::node name_tag;
+    WzNode name_tag;
 
     Point<std::int16_t> sel_world_pos;
     Point<std::int16_t> char_info_pos;

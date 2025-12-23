@@ -24,12 +24,12 @@
 
 namespace jrc
 {
-MapInfo::MapInfo(nl::node src,
+MapInfo::MapInfo(WzNode src,
                  Range<std::int16_t> walls,
                  Range<std::int16_t> borders)
 {
-    nl::node info = src["info"];
-    if (info["VRLeft"].data_type() == nl::node::type::integer) {
+    WzNode info = src["info"];
+    if (info["VRLeft"].getNodeType() == WzNode::NodeType::INTEGER) {
         map_walls = {info["VRLeft"], info["VRRight"]};
         map_borders = {info["VRTop"], info["VRBottom"]};
         map_borders = {map_borders.first() + Constants::VIEW_Y_OFFSET,
@@ -46,20 +46,31 @@ MapInfo::MapInfo(nl::node src,
                       ".img/",
                       bgm_path_view.substr(split + 1));
 
-    cloud = info["cloud"].get_bool();
+    cloud = info["cloud"].getBoolean();
     fieldlimit = info["fieldLimit"];
-    hide_minimap = info["hideMinimap"].get_bool();
-    map_mark = info["mapMark"].get_string();
-    swim = info["swim"].get_bool();
-    town = info["town"].get_bool();
+    hide_minimap = info["hideMinimap"].getBoolean();
+    map_mark = info["mapMark"].getString();
+    swim = info["swim"].getBoolean();
+    town = info["town"].getBoolean();
 
-    for (auto&& seat : src["seat"]) {
-        seats.push_back(seat);
+    WzNode node_seat = src["seat"];
+    for (auto  sub_seat = node_seat.begin() ; sub_seat != node_seat.end() ; ++sub_seat ){
+        /* code */
+        seats.push_back((*sub_seat).second);
     }
+    
+    // for (auto&& seat : src["seat"]) {
+    //     seats.push_back(seat);
+    // }
 
-    for (auto&& ladder : src["ladderRope"]) {
-        ladders.push_back(ladder);
+     WzNode node_ladderRope = src["ladderRope"];
+    for (auto  sub_ladderRope = node_ladderRope.begin() ; sub_ladderRope != node_ladderRope.end() ; ++sub_ladderRope ){
+        /* code */
+        ladders.push_back((*sub_ladderRope).second);
     }
+    // for (auto&& ladder : src["ladderRope"]) {
+    //     ladders.push_back(ladder);
+    // }
 }
 
 MapInfo::MapInfo() = default;
@@ -105,7 +116,7 @@ nullable_ptr<const Ladder> MapInfo::find_ladder(Point<std::int16_t> position,
     return nullptr;
 }
 
-Seat::Seat(nl::node src)
+Seat::Seat(WzNode src)
 {
     pos = src;
 }
@@ -122,12 +133,12 @@ Point<std::int16_t> Seat::get_pos() const
     return pos;
 }
 
-Ladder::Ladder(nl::node src)
+Ladder::Ladder(WzNode src)
 {
     x = src["x"];
     y1 = src["y1"];
     y2 = src["y2"];
-    ladder = src["l"].get_bool();
+    ladder = src["l"].getBoolean();
 }
 
 bool Ladder::is_ladder() const

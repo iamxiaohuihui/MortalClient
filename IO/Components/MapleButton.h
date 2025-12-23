@@ -25,8 +25,8 @@ namespace jrc
 class MapleButton : public Button
 {
 public:
-    MapleButton(nl::node src, Point<std::int16_t> position);
-    MapleButton(nl::node src);
+    MapleButton(WzNode src, Point<std::int16_t> position);
+    MapleButton(WzNode src);
 
     void draw(Point<std::int16_t> parent_pos) const override;
 

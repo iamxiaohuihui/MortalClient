@@ -18,7 +18,7 @@
 #include "Cursor.h"
 
 #include "../Constants.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
@@ -30,7 +30,7 @@ Cursor::Cursor()
 
 void Cursor::init()
 {
-    nl::node src = nl::nx::ui["Basic.img"]["Cursor"];
+    WzNode src = WzFile::ui["Basic.img"]["Cursor"];
     for (auto iter : animations) {
         iter.second = src[iter.first];
     }

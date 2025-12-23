@@ -19,8 +19,8 @@
 
 #include "../../Console.h"
 #include "../../Util/Misc.h"
-#include "nlnx/node.hpp"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
+#include "Wz.h"
 
 namespace jrc
 {
@@ -28,22 +28,22 @@ Body::Body(std::int32_t skin, const BodyDrawinfo& draw_info)
 {
     std::string str_img
         = str::concat("000020", string_format::extend_id(skin, 2), ".img");
-    nl::node bodynode = nl::nx::character[str_img];
+    WzNode bodynode = WzFile::character[str_img];
     str_img[3] = '1';
-    nl::node head_node = nl::nx::character[str_img];
+    WzNode head_node = WzFile::character[str_img];
 
     for (auto iter : Stance::names) {
         Stance::Id stance = iter.first;
         const std::string& stance_name = iter.second;
 
-        nl::node stance_node = bodynode[stance_name];
+        WzNode stance_node = bodynode[stance_name];
         if (!stance_node) {
             continue;
         }
 
-        for (std::uint8_t frame = 0; nl::node frame_node = stance_node[frame];
+        for (std::uint8_t frame = 0; WzNode frame_node = stance_node[frame];
              ++frame) {
-            for (nl::node part_node : frame_node) {
+            for (WzNode part_node : frame_node) {
                 std::string part = part_node.name();
                 if (part != "delay" && part != "face") {
                     std::string z = part_node["z"];
@@ -70,7 +70,7 @@ Body::Body(std::int32_t skin, const BodyDrawinfo& draw_info)
                 }
             }
 
-            if (nl::node head_s_f_node
+            if (WzNode head_s_f_node
                 = head_node[stance_name][frame]["head"]) {
                 Point<std::int16_t> shift
                     = draw_info.get_head_pos(stance, frame);

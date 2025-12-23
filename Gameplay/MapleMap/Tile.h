@@ -18,7 +18,7 @@
 #pragma once
 #include "../../Graphics/Texture.h"
 #include "../../Template/Point.h"
-#include "nlnx/node.hpp"
+#include "Wz.h"
 
 #include <cstdint>
 #include <string>
@@ -30,7 +30,7 @@ namespace jrc
 class Tile
 {
 public:
-    Tile(nl::node src, std::string_view tileset);
+    Tile(WzNode src, std::string_view tileset);
 
     //! Draw the tile.
     void draw(Point<std::int16_t> viewpos) const;

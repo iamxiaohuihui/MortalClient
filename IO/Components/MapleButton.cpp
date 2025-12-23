@@ -19,7 +19,7 @@
 
 namespace jrc
 {
-MapleButton::MapleButton(nl::node src, Point<std::int16_t> pos)
+MapleButton::MapleButton(WzNode src, Point<std::int16_t> pos)
 {
     textures[PRESSED] = src["pressed"]["0"];
     textures[MOUSE_OVER] = src["mouseOver"]["0"];
@@ -31,7 +31,7 @@ MapleButton::MapleButton(nl::node src, Point<std::int16_t> pos)
     active = true;
 }
 
-MapleButton::MapleButton(nl::node src) : MapleButton{src, {}}
+MapleButton::MapleButton(WzNode src) : MapleButton{src, {}}
 {
 }
 

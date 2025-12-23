@@ -17,7 +17,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include "BulletData.h"
 
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
@@ -31,7 +31,7 @@ BulletData::BulletData(std::int32_t item_id)
     std::string str_id = std::to_string(item_id);
     str_id.insert(0, "0", 1);
 
-    nl::node src = nl::nx::item["Consume"][prefix][str_id];
+    WzNode src = WzFile::item["Consume"][prefix][str_id];
 
     bullet = src["bullet"];
     watk = src["info"]["incPAD"];

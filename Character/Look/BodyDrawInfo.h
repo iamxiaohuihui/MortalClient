@@ -31,7 +31,7 @@ namespace jrc
 class BodyAction
 {
 public:
-    BodyAction(nl::node src)
+    BodyAction(WzNode src)
     {
         stance = Stance::by_string(src["action"].get_string());
         frame = src["frame"];

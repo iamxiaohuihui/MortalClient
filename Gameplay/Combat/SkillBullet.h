@@ -34,7 +34,7 @@ protected:
     struct Ball {
         Animation animation;
 
-        Ball(nl::node src)
+        Ball(WzNode src)
         {
             animation = src;
         }
@@ -54,7 +54,7 @@ public:
 class SingleBullet : public SkillBullet
 {
 public:
-    SingleBullet(nl::node src);
+    SingleBullet(WzNode src);
 
     Animation get(const Char& user, std::int32_t bulletid) const override;
 
@@ -65,7 +65,7 @@ private:
 class BySkillLevelBullet : public SkillBullet
 {
 public:
-    BySkillLevelBullet(nl::node src, std::int32_t skillid);
+    BySkillLevelBullet(WzNode src, std::int32_t skillid);
 
     Animation get(const Char& user, std::int32_t bulletid) const override;
 

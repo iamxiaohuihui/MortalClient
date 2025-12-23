@@ -22,15 +22,15 @@
 #include "UIGameSettings.h"
 #include "UINotice.h"
 #include "UISystemSettings.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
 UISystemMenu::UISystemMenu() : UIElement{POSITION, {WIDTH, HEIGHT}, true}
 {
-    nl::node source = nl::nx::ui["StatusBar2.img"]["mainBar"]["System"];
+    WzNode source = WzFile::ui["StatusBar2.img"]["mainBar"]["System"];
 
-    nl::node background = source["backgrnd"];
+    WzNode background = source["backgrnd"];
     top = background["0"];
     mid = background["1"];
     bottom = background["2"];

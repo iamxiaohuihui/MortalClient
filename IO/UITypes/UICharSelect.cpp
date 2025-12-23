@@ -27,7 +27,7 @@
 #include "../UI.h"
 #include "UICharCreation.h"
 #include "UISoftKey.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 #include <string_view>
 
@@ -44,10 +44,10 @@ UICharSelect::UICharSelect(std::vector<CharEntry> cs,
     selected_relative = selected_absolute % PAGE_SIZE;
     page = selected_absolute / PAGE_SIZE;
 
-    auto login = nl::nx::ui["Login.img"];
-    // nl::node title = login["Title"];
-    nl::node common = login["Common"];
-    nl::node char_select = login["CharSelect"];
+    auto login = WzFile::ui["Login.img"];
+    // WzNode title = login["Title"];
+    WzNode common = login["Common"];
+    WzNode char_select = login["CharSelect"];
 
     sprites.emplace_back(login["RaceSelect_new"]["Back"]["1"]);
     sprites.emplace_back(common["frame"], Point<std::int16_t>{400, 290});

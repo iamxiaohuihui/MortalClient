@@ -18,8 +18,8 @@
 #include "PetLook.h"
 
 #include "../../Constants.h"
-#include "nlnx/node.hpp"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
+#include "Wz.h"
 
 namespace jrc
 {
@@ -44,7 +44,7 @@ PetLook::PetLook(std::int32_t iid,
 
     std::string str_id = std::to_string(iid);
 
-    nl::node src = nl::nx::item["Pet"][str_id + ".img"];
+    WzNode src = WzFile::item["Pet"][str_id + ".img"];
 
     animations[MOVE] = src["move"];
     animations[STAND] = src["stand0"];
@@ -54,7 +54,7 @@ PetLook::PetLook(std::int32_t iid,
     animations[FLY] = src["fly"];
     animations[HANG] = src["hang"];
 
-    nl::node effsrc = nl::nx::effect["PetEff.img"][str_id];
+    WzNode effsrc = WzFile::effect["PetEff.img"][str_id];
 
     animations[WARP] = effsrc["warp"];
 }

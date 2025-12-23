@@ -18,8 +18,7 @@
 //#pragma once
 #include "Npc.h"
 
-#include "nlnx/node.hpp"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
@@ -35,35 +34,38 @@ Npc::Npc(std::int32_t npc_id_,
     str_id.insert(0, 7 - str_id.size(), '0');
     str_id.append(".img");
 
-    nl::node src = nl::nx::npc[str_id];
-    nl::node strsrc = nl::nx::string["Npc.img"][std::to_string(npc_id_)];
+    WzNode src = WzFile::npc[str_id];
+    WzNode strsrc = WzFile::string["Npc.img"][std::to_string(npc_id_)];
 
     std::string link = src["info"]["link"];
     if (link.size() > 0) {
         link.append(".img");
-        src = nl::nx::npc[link];
+        src = WzFile::npc[link];
     }
 
-    nl::node info = src["info"];
+    WzNode info = src["info"];
 
-    hide_name = info["hideName"].get_bool();
-    mouse_only = info["talkMouseOnly"].get_bool();
-    scripted = info["script"].size() > 0 || info["shop"].get_bool();
+    hide_name = info["hideName"].getBoolean();
+    mouse_only = info["talkMouseOnly"].getBoolean();
+    scripted = info["script"].getSize() > 0 || info["shop"].getBoolean();
 
-    for (const auto& npc_node : src) {
+
+    for (auto s_npc_node = src.begin() ; s_npc_node != src.end() ; ++s_npc_node) {
+        auto npc_node = (*s_npc_node).second;
         const std::string state = npc_node.name();
         if (state != "info") {
             animations[state] = npc_node;
             states.push_back(state);
         }
-
-        for (auto speaknode : npc_node["speak"]) {
-            lines[state].push_back(strsrc[speaknode.get_string()]);
+        WzNode s_speak = npc_node["speak"];
+        for (auto s_speaknode  = s_speak.begin () ; s_speaknode!=s_speak.end() ; ++s_speaknode  ) {
+            auto speaknode = (*s_speaknode).second;
+            lines[state].push_back(strsrc[speaknode.getString()]);
         }
     }
 
-    name = strsrc["name"].get_string();
-    func = strsrc["func"].get_string();
+    name = strsrc["name"].getString();
+    func = strsrc["func"].getString();
 
     name_label = {Text::A13B,
                   Text::CENTER,

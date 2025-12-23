@@ -26,7 +26,7 @@
 #include "../../Util/Misc.h"
 #include "../Components/MapleButton.h"
 #include "../Components/TwoSpriteButton.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
@@ -131,7 +131,7 @@ UISkillbook::UISkillbook(const CharStats& in_stats,
       skillbook{in_skillbook},
       tab{0}
 {
-    nl::node main = nl::nx::ui["UIWindow2.img"]["Skill"]["main"];
+    WzNode main = WzFile::ui["UIWindow2.img"]["Skill"]["main"];
 
     sprites.emplace_back(main["backgrnd"]);
     sprites.emplace_back(main["backgrnd2"]);
@@ -142,8 +142,8 @@ UISkillbook::UISkillbook(const CharStats& in_stats,
     line = main["line"];
 
     auto tab_src = main["Tab"];
-    nl::node tab_e = tab_src["enabled"];
-    nl::node tab_d = tab_src["disabled"];
+    WzNode tab_e = tab_src["enabled"];
+    WzNode tab_d = tab_src["disabled"];
 
     for (std::uint16_t i = BT_TAB0; i <= BT_TAB4; ++i) {
         std::uint16_t tab_id = i - BT_TAB0;

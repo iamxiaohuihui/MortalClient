@@ -339,12 +339,12 @@ void GraphicsGL::clear()
     }
 }
 
-void GraphicsGL::add_bitmap(const nl::bitmap& bmp)
+void GraphicsGL::add_bitmap(const WzBitmap& bmp)
 {
     get_offset(bmp);
 }
 
-const GraphicsGL::Offset& GraphicsGL::get_offset(const nl::bitmap& bmp)
+const GraphicsGL::Offset& GraphicsGL::get_offset(const WzBitmap& bmp)
 {
     std::size_t id = bmp.id();
     auto offiter = offsets.find(id);
@@ -354,14 +354,16 @@ const GraphicsGL::Offset& GraphicsGL::get_offset(const nl::bitmap& bmp)
 
     GLshort x = 0;
     GLshort y = 0;
-    GLshort w = bmp.width();
-    GLshort h = bmp.height();
+    
+    GLshort w = bmp.getWidth();
+    GLshort h = bmp.getHeight();
 
     if (w <= 0 || h <= 0) {
         return null_offset;
     }
 
-    const auto bmp_data = bmp.data();
+
+    auto bmp_data = bmp.input.data();
     if (!bmp_data) {
         return null_offset;
     }
@@ -460,7 +462,7 @@ const GraphicsGL::Offset& GraphicsGL::get_offset(const nl::bitmap& bmp)
         .first->second;
 }
 
-void GraphicsGL::draw(const nl::bitmap& bmp,
+void GraphicsGL::draw(const WzBitmap& bmp,
                       const Rectangle<std::int16_t>& rect,
                       const Color& color,
                       float angle)

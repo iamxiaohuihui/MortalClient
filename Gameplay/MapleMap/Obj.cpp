@@ -17,16 +17,16 @@
 //////////////////////////////////////////////////////////////////////////////
 #include "Obj.h"
 
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
-Obj::Obj(nl::node src)
-    : animation{nl::nx::map["Obj"][src["oS"] + ".img"][src["l0"]][src["l1"]]
+Obj::Obj(WzNode src)
+    : animation{WzFile::map["Obj"][src["oS"] + ".img"][src["l0"]][src["l1"]]
                            [src["l2"]]},
       pos{src["x"], src["y"]},
       z{src["z"]},
-      flip{src["f"].get_bool()}
+      flip{src["f"].getBoolean()}
 
 {
 }

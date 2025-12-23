@@ -19,7 +19,7 @@
 
 namespace jrc
 {
-TilesObjs::TilesObjs(nl::node src)
+TilesObjs::TilesObjs(WzNode src)
 {
     std::string tile_set = src["info"]["tS"];
     tile_set.append(".img", 4);
@@ -56,7 +56,7 @@ void TilesObjs::draw(Point<std::int16_t> view_pos, float alpha) const
     }
 }
 
-MapTilesObjs::MapTilesObjs(nl::node src)
+MapTilesObjs::MapTilesObjs(WzNode src)
 {
     for (auto iter : layers) {
         iter.second = src[iter.first];

@@ -19,15 +19,16 @@
 
 #include "../../Constants.h"
 #include "../../Util/Misc.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
-MapPortals::MapPortals(nl::node src, std::int32_t map_id)
+MapPortals::MapPortals(WzNode src, std::int32_t map_id)
 {
-    for (const auto& sub : src) {
-        auto portal_id
-            = string_conversion::or_default<std::int8_t>(sub.name(), -1);
+    for (auto s_node= src.begin() ; s_node != src.end() ; ++ s_node++) {
+
+        auto sub = (*s_node).second;
+        auto portal_id = sub.getInteger();
         if (portal_id < 0) {
             continue;
         }
@@ -130,7 +131,7 @@ Portal::WarpInfo MapPortals::find_warp_at(Point<std::int16_t> playerpos)
 
 void MapPortals::init()
 {
-    nl::node src = nl::nx::map["MapHelper.img"]["portal"]["game"];
+    WzNode src = WzFile::map["MapHelper.img"]["portal"]["game"];
 
     animations[Portal::HIDDEN] = src["ph"]["default"]["portalContinue"];
     animations[Portal::REGULAR] = src["pv"];

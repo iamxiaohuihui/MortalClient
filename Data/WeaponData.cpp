@@ -18,8 +18,8 @@
 #include "WeaponData.h"
 
 #include "../Console.h"
-#include "nlnx/node.hpp"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
+#include "WzNode.h"
 
 namespace jrc
 {
@@ -32,15 +32,15 @@ WeaponData::WeaponData(std::int32_t equip_id)
                  || (prefix >= Weapon::SWORD_2H && prefix <= Weapon::POLEARM)
                  || prefix == Weapon::CROSSBOW;
 
-    nl::node src = nl::nx::character["Weapon"][str::concat(
+    WzNode src = WzFile::character["Weapon"][str::concat(
         '0', std::to_string(equip_id), ".img")]["info"];
 
     attack_speed = static_cast<std::uint8_t>(src["attackSpeed"]);
     attack = static_cast<std::uint8_t>(src["attack"]);
 
-    nl::node soundsrc = nl::nx::sound["Weapon.img"][src["sfx"]];
+    WzNode soundsrc = WzFile::sound["Weapon.img"][src["sfx"]];
 
-    if (soundsrc["Attack2"].data_type() == nl::node::type::audio) {
+    if (soundsrc["Attack2"].getNodeType() == WzNode::NodeType::AUDIO) {
         use_sounds[false] = soundsrc["Attack"];
         use_sounds[true] = soundsrc["Attack2"];
     } else {
@@ -48,7 +48,7 @@ WeaponData::WeaponData(std::int32_t equip_id)
         use_sounds[true] = soundsrc["Attack"];
     }
 
-    afterimage = src["afterImage"].get_string();
+    afterimage = src["afterImage"].getString();
 }
 
 bool WeaponData::is_valid() const noexcept

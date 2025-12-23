@@ -17,7 +17,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #pragma once
 #include "../../Template/Range.h"
-#include "nlnx/node.hpp"
+#include "WzNode.h"
 
 namespace jrc
 {
@@ -25,7 +25,7 @@ namespace jrc
 class Foothold
 {
 public:
-    Foothold(nl::node src, std::uint16_t id, std::uint8_t layer);
+    Foothold(WzNode src, std::uint16_t id, std::uint8_t layer);
     Foothold();
 
     //! Returns the foothold id aka the identifier in game data of this

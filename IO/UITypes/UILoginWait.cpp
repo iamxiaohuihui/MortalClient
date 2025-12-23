@@ -19,13 +19,13 @@
 #include "UILoginWait.h"
 
 #include "../../Graphics/Sprite.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
 UILoginWait::UILoginWait()
 {
-    nl::node src = nl::nx::ui["Login.img"]["Notice"]["Loading"];
+    WzNode src = WzFile::ui["Login.img"]["Notice"]["Loading"];
 
     background = src["backgrnd"];
     circle = {src["circle"], {125, 72}};

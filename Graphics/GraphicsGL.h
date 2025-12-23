@@ -26,7 +26,7 @@
 #include "GL/glew.h"
 #include "Text.h"
 #include "ft2build.h"
-#include "nlnx/bitmap.hpp"
+#include "WzBitmap.h"
 #include FT_FREETYPE_H
 
 #include <string_view>
@@ -50,9 +50,9 @@ public:
     void clear();
 
     //! Add a bitmap to the available resources.
-    void add_bitmap(const nl::bitmap& bmp);
+    void add_bitmap(const WzBitmap& bmp);
     //! Draw the bitmap with the given parameters.
-    void draw(const nl::bitmap& bmp,
+    void draw(const WzBitmap& bmp,
               const Rectangle<std::int16_t>& rect,
               const Color& color,
               float angle);
@@ -122,7 +122,7 @@ private:
     };
 
     //! Add a bitmap to the available resources.
-    const Offset& get_offset(const nl::bitmap& bmp);
+    const Offset& get_offset(const WzBitmap& bmp);
 
     struct Leftover {
         GLshort l;

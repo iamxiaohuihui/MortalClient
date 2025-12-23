@@ -19,17 +19,16 @@
 
 #include "../Character/SkillId.h"
 #include "../Util/Misc.h"
-#include "nlnx/node.hpp"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
-bool ConditionlessBuff::is_applicable(CharStats&, nl::node) const
+bool ConditionlessBuff::is_applicable(CharStats&, WzNode) const
 {
     return true;
 }
 
-void AngelBlessingBuff::apply_to(CharStats& stats, nl::node level) const
+void AngelBlessingBuff::apply_to(CharStats& stats, WzNode level) const
 {
     stats.add_value(Equipstat::WATK, level["x"]);
     stats.add_value(Equipstat::MAGIC, level["y"]);
@@ -38,40 +37,40 @@ void AngelBlessingBuff::apply_to(CharStats& stats, nl::node level) const
 }
 
 template<Weapon::Type W1, Weapon::Type W2>
-bool f_is_applicable(CharStats& stats, nl::node level)
+bool f_is_applicable(CharStats& stats, WzNode level)
 {
     return f_is_applicable<W1>(stats, level)
            || f_is_applicable<W2>(stats, level);
 }
 
 template<Weapon::Type W1>
-bool f_is_applicable(CharStats& stats, nl::node)
+bool f_is_applicable(CharStats& stats, WzNode)
 {
     return stats.get_weapon_type() == W1;
 }
 
 template<Weapon::Type... W>
 bool WeaponMasteryBuff<W...>::is_applicable(CharStats& stats,
-                                            nl::node level) const
+                                            WzNode level) const
 {
     return f_is_applicable<W...>(stats, level);
 }
 
 template<Weapon::Type... W>
-void WeaponMasteryBuff<W...>::apply_to(CharStats& stats, nl::node level) const
+void WeaponMasteryBuff<W...>::apply_to(CharStats& stats, WzNode level) const
 {
     float mastery = static_cast<float>(level["mastery"]) / 100;
     stats.set_mastery(mastery);
     stats.add_value(Equipstat::ACC, level["x"]);
 }
 
-void AchillesBuff::apply_to(CharStats& stats, nl::node level) const
+void AchillesBuff::apply_to(CharStats& stats, WzNode level) const
 {
     float reducedamage = static_cast<float>(level["x"]) / 1000;
     stats.set_reduce_damage(reducedamage);
 }
 
-bool BerserkBuff::is_applicable(CharStats& stats, nl::node level) const
+bool BerserkBuff::is_applicable(CharStats& stats, WzNode level) const
 {
     float hp_percent = static_cast<float>(level["x"]) / 100;
     std::int32_t hp_threshold = static_cast<std::int32_t>(
@@ -80,7 +79,7 @@ bool BerserkBuff::is_applicable(CharStats& stats, nl::node level) const
     return hp_current <= hp_threshold;
 }
 
-void BerserkBuff::apply_to(CharStats& stats, nl::node level) const
+void BerserkBuff::apply_to(CharStats& stats, WzNode level) const
 {
     float damagepercent = static_cast<float>(level["damage"]) / 100;
     stats.set_damage_percent(damagepercent);
@@ -143,7 +142,7 @@ void PassiveBuffs::apply_buff(CharStats& stats,
     std::string str_id = skill_id < 10'000'000
                              ? string_format::extend_id(skill_id, 7)
                              : std::to_string(skill_id);
-    nl::node src = nl::nx::skill[str::concat(
+    WzNode src = WzFile::skill[str::concat(
         std::string_view(str_id).substr(0, 3), ".img")]["skill"][str_id]
                                 ["level"][skill_level];
 

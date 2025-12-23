@@ -20,7 +20,7 @@
 #include "../../Net/Packets/MessagingPackets.h"
 #include "../Components/MapleButton.h"
 #include "../UI.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
@@ -35,8 +35,8 @@ UIChatbar::UIChatbar(Point<std::int16_t> pos)
     row_max = -1;
     lastpos = 0;
 
-    nl::node mainbar = nl::nx::ui["StatusBar2.img"]["mainBar"];
-    nl::node chat_target_src = mainbar["chatTarget"];
+    WzNode mainbar = WzFile::ui["StatusBar2.img"]["mainBar"];
+    WzNode chat_target_src = mainbar["chatTarget"];
 
     buttons[BT_OPENCHAT] = std::make_unique<MapleButton>(mainbar["chatOpen"]);
     buttons[BT_CLOSECHAT]
@@ -65,7 +65,7 @@ UIChatbar::UIChatbar(Point<std::int16_t> pos)
 
     chattarget = CHT_ALL; // Default chat target
 
-    nl::node chat = nl::nx::ui["StatusBar2.img"]["chat"];
+    WzNode chat = WzFile::ui["StatusBar2.img"]["chat"];
 
     tapbar = chat["tapBar"];
     tapbartop = chat["tapBarOver"];

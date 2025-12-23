@@ -25,7 +25,7 @@
 #include "../../IO/Components/TwoSpriteButton.h"
 #include "../../IO/UI.h"
 #include "../../Net/Packets/LoginPackets.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
@@ -36,11 +36,11 @@ UIWorldSelect::UIWorldSelect(std::vector<World>&& worlds_)
     world_id = Configuration::get().account.world;
     channel_id = Configuration::get().account.channel;
 
-    nl::node back = nl::nx::map["Back"]["login.img"]["back"];
-    nl::node world_src
-        = nl::nx::ui["Login.img"]["WorldSelect"]["BtWorld"]["release"];
-    nl::node channel_src = nl::nx::ui["Login.img"]["WorldSelect"]["BtChannel"];
-    nl::node frame = nl::nx::ui["Login.img"]["Common"]["frame"];
+    WzNode back = WzFile::map["Back"]["login.img"]["back"];
+    WzNode world_src
+        = WzFile::ui["Login.img"]["WorldSelect"]["BtWorld"]["release"];
+    WzNode channel_src = WzFile::ui["Login.img"]["WorldSelect"]["BtChannel"];
+    WzNode frame = WzFile::ui["Login.img"]["Common"]["frame"];
 
     sprites.emplace_back(back["11"], Point<std::int16_t>{370, 300});
     sprites.emplace_back(world_src["layer:bg"], Point<std::int16_t>{650, 45});
@@ -69,7 +69,7 @@ UIWorldSelect::UIWorldSelect(std::vector<World>&& worlds_)
     }
 
     for (std::uint8_t i = 0; i < world.channel_count; ++i) {
-        nl::node ch_node = channel_src["button:" + std::to_string(i)];
+        WzNode ch_node = channel_src["button:" + std::to_string(i)];
         buttons[BT_CHANNEL0 + i]
             = std::make_unique<TwoSpriteButton>(ch_node["normal"]["0"],
                                                 ch_node["keyFocused"]["0"],

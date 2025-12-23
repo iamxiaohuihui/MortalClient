@@ -20,7 +20,7 @@
 #include "../../Graphics/Text.h"
 #include "../../Graphics/Texture.h"
 #include "../../Template/BoolPair.h"
-#include "nlnx/node.hpp"
+#include "Wz.h"
 #include "tinyutf8.h"
 
 #include <vector>
@@ -30,7 +30,7 @@ namespace jrc
 class Nametag
 {
 public:
-    Nametag(nl::node src,
+    Nametag(WzNode src,
             Text::Font font,
             Text::Color color,
             utf8_string&& name);

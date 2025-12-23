@@ -26,7 +26,7 @@
 #include "IO/Window.h"
 #include "Net/Session.h"
 #include "Timer.h"
-#include "Util/NxFiles.h"
+#include "Wz.h"
 
 #include <iostream>
 #include <locale>
@@ -39,9 +39,10 @@ Error init()
         return error;
     }
 
-    if (Error error = NxFiles::init(); error) {
-        return error;
-    }
+    WzFile::loadAll("./");
+    // if (Error error = NxFiles::init(); error) {
+    //     return error;
+    // }
 
     if (Error error = Window::get().init(); error) {
         return error;

@@ -24,14 +24,14 @@
 #include "../KeyAction.h"
 #include "../UI.h"
 #include "UIItemInventory.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
 UIKeyConfig::UIKeyConfig()
     : UIDragElement<Configuration::PositionOf::KEY_CONFIG>{{622, 20}}
 {
-    nl::node source = nl::nx::ui["UIWindow2.img"]["KeyConfig"];
+    WzNode source = WzFile::ui["UIWindow2.img"]["KeyConfig"];
 
     sprites.emplace_back(source["backgrnd"]);
     sprites.emplace_back(source["backgrnd2"]);
@@ -44,7 +44,7 @@ UIKeyConfig::UIKeyConfig()
     buttons[BT_QUICKSLOT]
         = std::make_unique<MapleButton>(source["BtQuickSlot"]);
 
-    nl::node icon_data = source["icon"];
+    WzNode icon_data = source["icon"];
 
     icons[KeyAction::Id::EQUIPMENT_TAB] = std::make_unique<Icon>(
         std::make_unique<KeyIcon>(KeyAction::Id::EQUIPMENT_TAB),
@@ -648,11 +648,11 @@ UIKeyConfig::UIKeyConfigNotice::UIKeyConfigNotice(
     bool ok_cancel)
     : yes_no_handler(yn_handler)
 {
-    nl::node src = nl::nx::ui["UIWindow2.img"]["KeyConfig"]["notice"];
+    WzNode src = WzFile::ui["UIWindow2.img"]["KeyConfig"]["notice"];
 
     sprites.emplace_back(src[static_cast<std::uint16_t>(type)]);
 
-    nl::node button_src = nl::nx::ui["Basic.img"];
+    WzNode button_src = WzFile::ui["Basic.img"];
 
     if (ok_cancel) {
         buttons[OK] = std::make_unique<MapleButton>(

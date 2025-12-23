@@ -19,7 +19,7 @@
 
 namespace jrc
 {
-Foothold::Foothold(nl::node src, std::uint16_t id, std::uint8_t ly)
+Foothold::Foothold(WzNode src, std::uint16_t id, std::uint8_t ly)
     : m_id(id),
       m_prev(src["prev"]),
       m_next(src["next"]),

@@ -17,14 +17,14 @@
 //////////////////////////////////////////////////////////////////////////////
 #pragma once
 #include "../../Graphics/Texture.h"
-#include "nlnx/node.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
 class MapleFrame
 {
 public:
-    MapleFrame(nl::node src);
+    MapleFrame(WzNode src);
     MapleFrame();
 
     void draw(Point<std::int16_t> position,

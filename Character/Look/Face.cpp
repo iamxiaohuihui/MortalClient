@@ -18,8 +18,8 @@
 #include "Face.h"
 
 #include "../../Console.h"
-#include "nlnx/node.hpp"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
+#include "Wz.h"
 
 namespace jrc
 {
@@ -43,23 +43,23 @@ const EnumMap<Expression::Id, std::string> Expression::names
 Face::Face(std::int32_t face_id)
 {
     const std::string face_id_str = std::to_string(face_id);
-    nl::node face_node
-        = nl::nx::character["Face"][str::concat("000", face_id_str, ".img")];
+    WzNode face_node
+        = WzFile::character["Face"][str::concat("000", face_id_str, ".img")];
 
     for (auto iter : Expression::names) {
         Expression::Id exp = iter.first;
         if (exp == Expression::DEFAULT) {
             expressions[Expression::DEFAULT].emplace(0, face_node["default"]);
         } else {
-            nl::node exp_node = face_node[iter.second];
-            for (std::uint8_t frame = 0; nl::node framenode = exp_node[frame];
+            WzNode exp_node = face_node[iter.second];
+            for (std::uint8_t frame = 0; WzNode framenode = exp_node[frame];
                  ++frame) {
                 expressions[exp].emplace(frame, framenode);
             }
         }
     }
 
-    name = nl::nx::string["Eqp.img"]["Eqp"]["Face"][face_id_str]["name"]
+    name = WzFile::string["Eqp.img"]["Eqp"]["Face"][face_id_str]["name"]
                .get_string();
 }
 

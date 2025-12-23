@@ -18,7 +18,7 @@
 #pragma once
 #include "../../Graphics/Texture.h"
 #include "../Cursor.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 #include <functional>
 
@@ -30,7 +30,7 @@ public:
     enum State : std::uint8_t { NORMAL, PRESSED, DISABLED, MOUSE_OVER };
 
     SliderHoriz(
-        nl::node src,
+        WzNode src,
         Range<std::int16_t> horiz,
         std::int16_t y_pos,
         std::int16_t unit_cols,

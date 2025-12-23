@@ -19,7 +19,7 @@
 #include "../../Template/Point.h"
 #include "../../Template/Range.h"
 #include "../../Template/nullable_ptr.h"
-#include "nlnx/node.hpp"
+#include "Wz.h"
 
 #include <vector>
 
@@ -28,7 +28,7 @@ namespace jrc
 class Seat
 {
 public:
-    Seat(nl::node source);
+    Seat(WzNode source);
 
     bool in_range(Point<std::int16_t> position) const;
     Point<std::int16_t> get_pos() const;
@@ -40,7 +40,7 @@ private:
 class Ladder
 {
 public:
-    Ladder(nl::node source);
+    Ladder(WzNode source);
 
     bool is_ladder() const;
     bool in_range(Point<std::int16_t> position, bool upwards) const;
@@ -57,7 +57,7 @@ private:
 class MapInfo
 {
 public:
-    MapInfo(nl::node src,
+    MapInfo(WzNode src,
             Range<std::int16_t> walls,
             Range<std::int16_t> borders);
     MapInfo();

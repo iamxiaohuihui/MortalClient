@@ -21,7 +21,7 @@
 
 namespace jrc
 {
-SingleUseEffect::SingleUseEffect(nl::node src) : effect(src["effect"])
+SingleUseEffect::SingleUseEffect(WzNode src) : effect(src["effect"])
 {
 }
 
@@ -30,7 +30,7 @@ void SingleUseEffect::apply(Char& target) const
     effect.apply(target);
 }
 
-TwoHUseEffect::TwoHUseEffect(nl::node src)
+TwoHUseEffect::TwoHUseEffect(WzNode src)
     : effects(src["effect"]["0"], src["effect"]["1"])
 {
 }
@@ -40,10 +40,10 @@ void TwoHUseEffect::apply(Char& target) const
     effects[target.is_two_handed()].apply(target);
 }
 
-MultiUseEffect::MultiUseEffect(nl::node src)
+MultiUseEffect::MultiUseEffect(WzNode src)
 {
     std::int8_t no = -1;
-    nl::node sub = src["effect"];
+    WzNode sub = src["effect"];
     while (sub) {
         effects.push_back(sub);
 
@@ -59,7 +59,7 @@ void MultiUseEffect::apply(Char& target) const
     }
 }
 
-ByLevelUseEffect::ByLevelUseEffect(nl::node src)
+ByLevelUseEffect::ByLevelUseEffect(WzNode src)
 {
     for (auto sub : src["CharLevel"]) {
         auto level = string_conversion::or_zero<std::uint16_t>(sub.name());

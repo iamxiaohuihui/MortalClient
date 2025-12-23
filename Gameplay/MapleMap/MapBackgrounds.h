@@ -29,7 +29,7 @@ namespace jrc
 class Background
 {
 public:
-    Background(nl::node src);
+    Background(WzNode src);
 
     void draw(double viewx, double viewy, float alpha) const;
     void update();
@@ -81,7 +81,7 @@ private:
 class MapBackgrounds
 {
 public:
-    MapBackgrounds(nl::node src);
+    MapBackgrounds(WzNode src);
     MapBackgrounds();
 
     void drawbackgrounds(double viewx, double viewy, float alpha) const;

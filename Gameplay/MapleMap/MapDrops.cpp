@@ -22,8 +22,7 @@
 #include "Drop.h"
 #include "ItemDrop.h"
 #include "MesoDrop.h"
-#include "nlnx/node.hpp"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
@@ -34,7 +33,7 @@ MapDrops::MapDrops()
 
 void MapDrops::init()
 {
-    nl::node src = nl::nx::item["Special"]["0900.img"];
+    WzNode src = WzFile::item["Special"]["0900.img"];
 
     mesoicons[BRONZE] = src["09000000"]["iconRaw"];
     mesoicons[GOLD] = src["09000001"]["iconRaw"];

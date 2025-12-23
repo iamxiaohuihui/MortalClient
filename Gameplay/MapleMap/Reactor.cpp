@@ -18,7 +18,7 @@
 #include "Reactor.h"
 
 #include "../../Util/Misc.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
@@ -29,7 +29,7 @@ Reactor::Reactor(std::int32_t o,
     : MapObject(o, p), rid(r), state(s)
 {
     std::string strid = string_format::extend_id(rid, 7);
-    nl::node src = nl::nx::reactor[strid + ".img"];
+    WzNode src = WzFile::reactor[strid + ".img"];
 
     normal = src["0"];
 }

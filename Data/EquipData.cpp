@@ -17,8 +17,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include "EquipData.h"
 
-#include "nlnx/node.hpp"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
@@ -27,10 +26,10 @@ EquipData::EquipData(std::int32_t id) : itemdata(ItemData::get(id))
     std::string str_id = std::to_string(id);
     str_id.insert(0, "0", 1);
     str_id += ".img";
-    nl::node src = nl::nx::character[itemdata.get_category()][str_id]["info"];
+    WzNode src = WzFile::character[itemdata.get_category().data()][str_id]["info"];
 
-    cash = src["cash"].get_bool();
-    tradeblock = src["tradeBlock"].get_bool();
+    cash = src["cash"].getBoolean();
+    tradeblock = src["tradeBlock"].getBoolean();
     slots = src["tuc"];
     reqstats[Maplestat::LEVEL] = src["reqLevel"];
     reqstats[Maplestat::JOB] = src["reqJob"];

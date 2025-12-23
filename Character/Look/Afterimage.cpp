@@ -18,7 +18,7 @@
 #include "Afterimage.h"
 
 #include "../../Util/Misc.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 #include <string_view>
 
@@ -29,16 +29,16 @@ Afterimage::Afterimage(std::int32_t skill_id,
                        std::string_view stance_name,
                        std::int16_t level)
 {
-    nl::node src;
+    WzNode src;
     if (skill_id > 0) {
         std::string str_id = string_format::extend_id(skill_id, 7);
-        src = nl::nx::skill[str::concat(std::string_view(str_id).substr(0, 3),
+        src = WzFile::skill[str::concat(std::string_view(str_id).substr(0, 3),
                                         ".img")]["skill"][str_id]["afterimage"]
                            [name][stance_name];
     }
 
     if (!src) {
-        src = nl::nx::character["Afterimage"][str::concat(name, ".img")]
+        src = WzFile::character["Afterimage"][str::concat(name, ".img")]
                                [level / 10][stance_name];
     }
 
@@ -46,7 +46,7 @@ Afterimage::Afterimage(std::int32_t skill_id,
     first_frame = 0;
     displayed = false;
 
-    for (nl::node sub : src) {
+    for (WzNode sub : src) {
         std::uint8_t frame
             = string_conversion::or_default<std::uint8_t>(sub.name(), 255);
         if (frame < 255) {

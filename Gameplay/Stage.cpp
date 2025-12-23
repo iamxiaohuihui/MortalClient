@@ -23,7 +23,7 @@
 #include "../Net/Packets/AttackAndSkillPackets.h"
 #include "../Net/Packets/GameplayPackets.h"
 #include "../Util/Misc.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 #include <iostream>
 
@@ -78,8 +78,8 @@ void Stage::load_map(std::int32_t map_id)
     std::string str_id = string_format::extend_id(map_id, 9);
     str_id += ".img";
 
-    nl::node src
-        = nl::nx::map["Map"]["Map" + std::to_string(map_id / 100'000'000)]
+    WzNode src
+        = WzFile::map["Map"]["Map" + std::to_string(map_id / 100'000'000)]
                      [str_id];
 
     tiles_objs = MapTilesObjs(src);

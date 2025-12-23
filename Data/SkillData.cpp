@@ -19,8 +19,7 @@
 
 #include "../Character/SkillId.h"
 #include "../Util/Misc.h"
-#include "nlnx/node.hpp"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 #include <string_view>
 #include <unordered_set>
@@ -31,43 +30,46 @@ SkillData::SkillData(std::int32_t id)
 {
     // Locate sources
     std::string strid = string_format::extend_id(id, 7);
-    nl::node src = nl::nx::skill[str::concat(
+    WzNode src = WzFile::skill[str::concat(
         std::string_view(strid).substr(0, 3), ".img")]["skill"][strid];
-    nl::node strsrc = nl::nx::string["Skill.img"][strid];
+    WzNode strsrc = WzFile::string["Skill.img"][strid];
 
     // Load icons
     icons = {src["icon"], src["iconDisabled"], src["iconMouseOver"]};
 
     // Load strings
-    name = strsrc["name"].get_string();
-    desc = strsrc["desc"].get_string();
+    name = strsrc["name"].getString();
+    desc = strsrc["desc"].getString();
 
     for (std::int32_t level = 1;
-         nl::node sub = strsrc["h" + std::to_string(level)];
+         ;
          ++level) {
-        levels.emplace(level, sub);
+            WzNode sub = strsrc["h" + std::to_string(level)];
+        levels.emplace(level, sub.getString());
     }
 
     // Load stats
-    nl::node levelsrc = src["level"];
-    for (auto sub : levelsrc) {
+    WzNode levelsrc = src["level"];
+    for (auto f_sub = levelsrc.begin() ; f_sub != levelsrc.end() ; ++f_sub) {
+
+        auto sub = (*f_sub).second;
         float damage = (float)sub["damage"] / 100;
         std::int32_t matk = sub["mad"];
         std::int32_t fixdamage = sub["fix_damage"];
         std::int32_t mastery = sub["mastery"];
         std::uint8_t attackcount
-            = (std::uint8_t)sub["attackCount"].get_integer(1);
-        std::uint8_t mobcount = (std::uint8_t)sub["mobCount"].get_integer(1);
+            = (std::uint8_t)sub["attackCount"].getInteger(1);
+        std::uint8_t mobcount = (std::uint8_t)sub["mobCount"].getInteger(1);
         std::uint8_t bulletcount
-            = (std::uint8_t)sub["bulletCount"].get_integer(1);
+            = (std::uint8_t)sub["bulletCount"].getInteger(1);
         std::int16_t bulletcost
-            = (std::int16_t)sub["bulletConsume"].get_integer(bulletcount);
+            = (std::int16_t)sub["bulletConsume"].getInteger(bulletcount);
         std::int32_t hpcost = sub["hpCon"];
         std::int32_t mpcost = sub["mpCon"];
-        float chance = (float)sub["prop"].get_real(100.0) / 100;
+        float chance = (float)sub["prop"].getReal(100.0) / 100;
         float critical = 0.0f;
         float ignoredef = 0.0f;
-        float hrange = (float)sub["range"].get_real(100.0) / 100;
+        float hrange = (float)sub["range"].getReal(100.0) / 100;
         Rectangle<std::int16_t> range = sub;
         std::int32_t level
             = string_conversion::or_default<std::int32_t>(sub.name(), -1);
@@ -90,12 +92,12 @@ SkillData::SkillData(std::int32_t id)
                                             range));
     }
 
-    element = src["elemAttr"].get_string();
+    element = src["elemAttr"].getString();
     reqweapon = Weapon::by_value(100 + (std::int32_t)src["weapon"]);
     masterlevel = static_cast<std::int32_t>(stats.size());
     passive = (id % 10000) / 1000 == 0;
     flags = flags_of(id);
-    invisible = src["invisible"].get_bool();
+    invisible = src["invisible"].getBoolean();
 }
 
 std::int32_t SkillData::flags_of(std::int32_t id) const noexcept

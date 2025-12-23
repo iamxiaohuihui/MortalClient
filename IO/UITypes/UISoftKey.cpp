@@ -19,13 +19,13 @@
 
 #include "../../Net/Packets/SelectCharPackets.h"
 #include "../Components/MapleButton.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
 UISoftkey::UISoftkey(Callback c) : callback{c}
 {
-    nl::node src = nl::nx::ui["Login.img"]["Common"]["SoftKey"];
+    WzNode src = WzFile::ui["Login.img"]["Common"]["SoftKey"];
 
     sprites.emplace_back(src["backgrnd"]);
     sprites.emplace_back(src["backgrnd2"]);
@@ -38,7 +38,7 @@ UISoftkey::UISoftkey(Callback c) : callback{c}
     buttons[BT_CANCEL] = std::make_unique<MapleButton>(
         src["BtCancel"], Point<std::int16_t>(13, 235));
 
-    nl::node keys = src["BtNum"];
+    WzNode keys = src["BtNum"];
 
     buttons[BT_0] = std::make_unique<MapleButton>(keys["0"]);
     buttons[BT_1] = std::make_unique<MapleButton>(keys["1"]);

@@ -18,8 +18,7 @@
 #include "ChatBalloon.h"
 
 #include "../../Constants.h"
-#include "nlnx/node.hpp"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
@@ -37,7 +36,7 @@ ChatBalloon::ChatBalloon(std::int8_t type)
         }
     }();
 
-    nl::node src = nl::nx::ui["ChatBalloon.img"][type_str];
+    WzNode src = WzFile::ui["ChatBalloon.img"][type_str];
 
     arrow = src["arrow"];
     frame = src;

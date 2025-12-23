@@ -20,8 +20,7 @@
 #include "../../Data/EquipData.h"
 #include "../../Data/WeaponData.h"
 #include "../../Gameplay/Stage.h"
-#include "nlnx/node.hpp"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 #include <cstdlib>
 
@@ -29,7 +28,7 @@ namespace jrc
 {
 EquipTooltip::EquipTooltip()
 {
-    nl::node item_tt = nl::nx::ui["UIToolTip.img"]["Item"];
+    WzNode item_tt = WzFile::ui["UIToolTip.img"]["Item"];
 
     top = item_tt["Frame"]["top"];
     mid = item_tt["Frame"]["line"];

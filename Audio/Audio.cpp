@@ -20,8 +20,6 @@
 #include "../Configuration.h"
 
 #define WIN32_LEAN_AND_MEAN
-#include "nlnx/audio.hpp"
-#include "nlnx/nx.hpp"
 
 #include <cstddef>
 
@@ -37,7 +35,7 @@ Sound::Sound(Name name) noexcept : id{sound_ids[name]}
 {
 }
 
-Sound::Sound(nl::node src) noexcept : id{add_sound(src)}
+Sound::Sound(WzNode src) noexcept : id{add_sound(src)}
 {
 }
 
@@ -71,13 +69,13 @@ Error Sound::init()
     // Allocate 16 channels for playing sound effects.
     Mix_AllocateChannels(16);
 
-    nl::node ui_src = nl::nx::sound["UI.img"];
+    WzNode ui_src = WzFile::sound["UI.img"];
 
     add_sound(Sound::BUTTON_CLICK, ui_src["BtMouseClick"]);
     add_sound(Sound::BUTTON_OVER, ui_src["BtMouseOver"]);
     add_sound(Sound::SELECT_CHAR, ui_src["CharSelect"]);
 
-    nl::node game_src = nl::nx::sound["Game.img"];
+    WzNode game_src = WzFile::sound["Game.img"];
 
     add_sound(Sound::GAME_START, game_src["GameIn"]);
     add_sound(Sound::JUMP, game_src["Jump"]);
@@ -130,21 +128,21 @@ void Sound::set_sfx_volume(std::uint8_t vol) noexcept
     Mix_Volume(-1, MIX_MAX_VOLUME * static_cast<int>(vol) / 100);
 }
 
-std::size_t Sound::add_sound(nl::node src) noexcept
+std::size_t Sound::add_sound(WzNode src) noexcept
 {
     if (!initialized) {
         return 0;
     }
 
-    nl::audio ad = src;
+    WzAudio ad = src.getAudio();
 
-    auto data = static_cast<const std::byte*>(ad.data());
+    auto data = ad.getAudioData();
 
     if (data) {
-        std::size_t id = ad.id();
+        std::size_t id = ad.getId();
 
         samples[id] = Mix_LoadWAV_RW(
-            SDL_RWFromConstMem(data + 82, ad.length() - 82), 0);
+            SDL_RWFromConstMem(data + 82, ad.getLength() - 82), 0);
 
         return id;
     } else {
@@ -152,7 +150,7 @@ std::size_t Sound::add_sound(nl::node src) noexcept
     }
 }
 
-void Sound::add_sound(Name name, nl::node src) noexcept
+void Sound::add_sound(Name name, WzNode src) noexcept
 {
     if (!initialized) {
         return;
@@ -186,8 +184,8 @@ Error Music::play(const std::string& bgm_path)
         return Error::NONE;
     }
 
-    nl::audio ad = nl::nx::sound.resolve(bgm_path);
-    auto data = static_cast<const std::byte*>(ad.data());
+    WzAudio ad = WzFile::sound.resolve(bgm_path.c_str());
+    auto data = ad.getAudioData();
 
     if (data) {
         if (stream) {
@@ -196,7 +194,7 @@ Error Music::play(const std::string& bgm_path)
         }
 
         stream = Mix_LoadMUSType_RW(
-            SDL_RWFromConstMem(data + 82, ad.length() - 82), MUS_OGG, 0);
+            SDL_RWFromConstMem(data + 82, ad.getLength() - 82), MUS_OGG, 0);
         if (Mix_PlayMusic(stream, -1) == -1) {
             return Error::AUDIO;
         }

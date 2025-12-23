@@ -17,7 +17,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #pragma once
 #include "Animation.h"
-#include "nlnx/node.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
@@ -26,8 +26,8 @@ class Sprite
 {
 public:
     Sprite(const Animation& a, const DrawArgument& s_args);
-    Sprite(nl::node src, const DrawArgument& s_args);
-    Sprite(nl::node src);
+    Sprite(WzNode src, const DrawArgument& s_args);
+    Sprite(WzNode src);
     Sprite();
 
     void draw(Point<std::int16_t> parent_pos, float alpha) const;

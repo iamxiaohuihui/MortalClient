@@ -18,14 +18,13 @@
 #include "ItemTooltip.h"
 
 #include "../../Data/ItemData.h"
-#include "nlnx/node.hpp"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
 ItemTooltip::ItemTooltip()
 {
-    nl::node item_tt = nl::nx::ui["UIToolTip.img"]["Item"];
+    WzNode item_tt = WzFile::ui["UIToolTip.img"]["Item"];
 
     top = item_tt["Frame"]["top"];
     mid = item_tt["Frame"]["line"];

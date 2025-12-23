@@ -19,38 +19,38 @@
 
 #include "../Configuration.h"
 #include "GraphicsGL.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
-Texture::Texture(nl::node src)
+Texture::Texture(WzNode src)
 {
-    if (src.data_type() == nl::node::type::bitmap) {
-        const nl::node src_origin = src["origin"];
+    if (src.getNodeType() == WzNode::NodeType::BITMAP) {
+        WzNode src_origin = src["origin"];
         const Point<std::int16_t> original_origin = src_origin;
         const bool use_original_origin
-            = src_origin.data_type() == nl::node::type::vector;
+            = src_origin.getNodeType() == WzNode::NodeType::VECTOR;
 
         const std::string link = src["source"];
         if (!link.empty()) {
-            nl::node src_file = src;
+            WzNode src_file = src;
             while (src_file != src_file.root()) {
                 src_file = src_file.root();
             }
             src = src_file.resolve(
-                std::string_view{link}.substr(link.find('/') + 1));
+                std::string_view{link}.substr(link.find('/') + 1).data());
         }
 
         bitmap = src;
         origin = use_original_origin ? original_origin : src["origin"];
-        dimensions = {bitmap.width(), bitmap.height()};
+        dimensions = {bitmap.getWidth(), bitmap.getHeight()};
 
         GraphicsGL::get().add_bitmap(bitmap);
     }
 }
 
-Texture::Texture(nl::bitmap bm, Point<std::int16_t> orig)
-    : bitmap{bm}, origin{orig}, dimensions{bm.width(), bm.height()}
+Texture::Texture(WzBitmap bm, Point<std::int16_t> orig)
+    : bitmap{bm}, origin{orig}, dimensions{bm.getWidth(), bm.getHeight()}
 {
 }
 

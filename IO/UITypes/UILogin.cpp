@@ -25,7 +25,7 @@
 #include "../Components/MapleButton.h"
 #include "../UI.h"
 #include "UILoginWait.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
@@ -35,13 +35,13 @@ UILogin::UILogin()
         Console::get().print("Error playing music BgmUI.img/Title");
     }
 
-    nl::node title = nl::nx::ui["Login.img"]["Title"];
-    nl::node common = nl::nx::ui["Login.img"]["Common"];
+    WzNode title = WzFile::ui["Login.img"]["Title"];
+    WzNode common = WzFile::ui["Login.img"]["Common"];
 
-    sprites.emplace_back(nl::nx::map["Back"]["login.img"]["back"]["11"],
+    sprites.emplace_back(WzFile::map["Back"]["login.img"]["back"]["11"],
                          Point<std::int16_t>{370, 300});
     // sprites.emplace_back(title["35"], Point<std::int16_t>{410, 260});
-    sprites.emplace_back(nl::nx::map["Obj"]["login.img"]["Title"]["logo"]["0"],
+    sprites.emplace_back(WzFile::map["Obj"]["login.img"]["Title"]["logo"]["0"],
                          Point<std::int16_t>{410, 130});
     sprites.emplace_back(title["signboard"], Point<std::int16_t>{410, 300});
     sprites.emplace_back(common["frame"], Point<std::int16_t>{400, 290});

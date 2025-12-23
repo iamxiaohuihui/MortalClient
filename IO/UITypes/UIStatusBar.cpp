@@ -22,7 +22,7 @@
 #include "../UI.h"
 #include "UIChangeChannel.h"
 #include "UISystemSettings.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 #include <string_view>
 
@@ -34,7 +34,7 @@ constexpr Point<std::int16_t> UIStatusbar::DIMENSION;
 UIStatusbar::UIStatusbar(const CharStats& st)
     : UIElement{POSITION, DIMENSION}, stats{st}, chatbar{POSITION}
 {
-    nl::node mainbar = nl::nx::ui["StatusBar2.img"]["mainBar"];
+    WzNode mainbar = WzFile::ui["StatusBar2.img"]["mainBar"];
 
     sprites.emplace_back(mainbar["backgrnd"]);
     sprites.emplace_back(mainbar["gaugeBackgrd"]);

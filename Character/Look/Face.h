@@ -78,7 +78,7 @@ private:
         Texture texture;
         std::uint16_t delay;
 
-        Frame(nl::node src)
+        Frame(WzNode src)
         {
             texture = src["face"];
 

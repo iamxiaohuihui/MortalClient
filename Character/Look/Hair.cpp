@@ -19,27 +19,27 @@
 
 #include "../../Console.h"
 #include "../../Util/Misc.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
 Hair::Hair(std::int32_t hairid, const BodyDrawinfo& drawinfo)
 {
-    nl::node hairnode = nl::nx::character["Hair"][str::concat(
+    WzNode hairnode = WzFile::character["Hair"][str::concat(
         "000", std::to_string(hairid), ".img")];
 
     for (const auto& s : Stance::names) {
         auto stance = s.first;
         auto stance_name = s.second;
 
-        nl::node stancenode = hairnode[stance_name];
+        WzNode stancenode = hairnode[stance_name];
         if (!stancenode) {
             continue;
         }
 
-        for (std::uint8_t frame = 0; nl::node framenode = stancenode[frame];
+        for (std::uint8_t frame = 0; WzNode framenode = stancenode[frame];
              ++frame) {
-            for (nl::node layernode : framenode) {
+            for (WzNode layernode : framenode) {
                 std::string layer_name = layernode.name();
                 auto layer_iter = layers_by_name.find(layer_name);
                 if (layer_iter == layers_by_name.end()) {
@@ -60,7 +60,7 @@ Hair::Hair(std::int32_t hairid, const BodyDrawinfo& drawinfo)
         }
     }
 
-    name = nl::nx::string["Eqp.img"]["Eqp"]["Hair"][std::to_string(hairid)]
+    name = WzFile::string["Eqp.img"]["Eqp"]["Hair"][std::to_string(hairid)]
                          ["name"]
                              .get_string();
 

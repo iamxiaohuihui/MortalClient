@@ -20,8 +20,8 @@
 #include "../../Character/SkillId.h"
 #include "../../Data/SkillData.h"
 #include "../../Util/Misc.h"
-#include "nlnx/node.hpp"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
+#include "WzNode.h"
 
 #include <cstring>
 
@@ -37,24 +37,24 @@ Skill::Skill(std::int32_t id) : skillid(id)
     char img_str_buf[7];
     std::memcpy(img_str_buf, str_id.data(), 3);
     std::memcpy(img_str_buf + 3, ".img", 4);
-    nl::node src
-        = nl::nx::skill[std::string_view{img_str_buf, 7}]["skill"][str_id];
+    WzNode src
+        = WzFile::skill[std::string_view{img_str_buf, 7}.data()]["skill"][str_id];
 
     projectile = true;
     overregular = false;
 
     sound = std::make_unique<SingleSkillSound>(str_id);
 
-    bool by_level_effect = src["CharLevel"]["10"]["effect"].size() > 0;
-    bool multi_effect = src["effect0"].size() > 0;
+    bool by_level_effect = src["CharLevel"]["10"]["effect"].getSize() > 0;
+    bool multi_effect = src["effect0"].getSize() > 0;
     if (by_level_effect) {
         useeffect = std::make_unique<ByLevelUseEffect>(src);
     } else if (multi_effect) {
         useeffect = std::make_unique<MultiUseEffect>(src);
     } else {
         bool is_animation
-            = src["effect"]["0"].data_type() == nl::node::type::bitmap;
-        bool has_effect1 = src["effect"]["1"].size() > 0;
+            = src["effect"]["0"].getNodeType() == WzNode::NodeType::BITMAP;
+        bool has_effect1 = src["effect"]["1"].getSize() > 0;
         if (is_animation) {
             useeffect = std::make_unique<SingleUseEffect>(src);
         } else if (has_effect1) {
@@ -71,10 +71,10 @@ Skill::Skill(std::int32_t id) : skillid(id)
         }
     }
 
-    bool bylevelhit = src["CharLevel"]["10"]["hit"].size() > 0;
-    bool byskilllevelhit = src["level"]["1"]["hit"].size() > 0;
-    bool hashit0 = src["hit"]["0"].size() > 0;
-    bool hashit1 = src["hit"]["1"].size() > 0;
+    bool bylevelhit = src["CharLevel"]["10"]["hit"].getSize() > 0;
+    bool byskilllevelhit = src["level"]["1"]["hit"].getSize() > 0;
+    bool hashit0 = src["hit"]["0"].getSize() > 0;
+    bool hashit1 = src["hit"]["1"].getSize() > 0;
     if (bylevelhit) {
         if (hashit0 && hashit1) {
             hiteffect = std::make_unique<ByLevelTwoHHitEffect>(src);
@@ -91,15 +91,15 @@ Skill::Skill(std::int32_t id) : skillid(id)
         hiteffect = std::make_unique<NoHitEffect>();
     }
 
-    bool hasaction0 = src["action"]["0"].data_type() == nl::node::type::string;
-    bool hasaction1 = src["action"]["1"].data_type() == nl::node::type::string;
+    bool hasaction0 = src["action"]["0"].getNodeType() == WzNode::NodeType::STRING;
+    bool hasaction1 = src["action"]["1"].getNodeType() == WzNode::NodeType::STRING;
     if (hasaction0 && hasaction1) {
         action = std::make_unique<TwoHAction>(src);
     } else if (hasaction0) {
         action = std::make_unique<SingleAction>(src);
     } else if (data.is_attack()) {
-        bool bylevel = src["level"]["1"]["action"].data_type()
-                       == nl::node::type::string;
+        bool bylevel = src["level"]["1"]["action"].getNodeType()
+                       == WzNode::NodeType::STRING;
         if (bylevel) {
             action = std::make_unique<ByLevelAction>(src, skillid);
         } else {
@@ -110,8 +110,8 @@ Skill::Skill(std::int32_t id) : skillid(id)
         action = std::make_unique<NoAction>();
     }
 
-    bool hasball = src["ball"].size() > 0;
-    bool bylevelball = src["level"]["1"]["ball"].size() > 0;
+    bool hasball = src["ball"].getSize() > 0;
+    bool bylevelball = src["level"]["1"]["ball"].getSize() > 0;
     if (bylevelball) {
         bullet = std::make_unique<BySkillLevelBullet>(src, skillid);
     } else if (hasball) {

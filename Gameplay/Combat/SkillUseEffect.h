@@ -38,7 +38,7 @@ protected:
     class Effect
     {
     public:
-        Effect(nl::node src)
+        Effect(WzNode src)
         {
             animation = src;
             z = src["z"];
@@ -68,7 +68,7 @@ public:
 class SingleUseEffect : public SkillUseEffect
 {
 public:
-    SingleUseEffect(nl::node src);
+    SingleUseEffect(WzNode src);
 
     void apply(Char& target) const override;
 
@@ -81,7 +81,7 @@ private:
 class TwoHUseEffect : public SkillUseEffect
 {
 public:
-    TwoHUseEffect(nl::node src);
+    TwoHUseEffect(WzNode src);
 
     void apply(Char& target) const override;
 
@@ -93,7 +93,7 @@ private:
 class MultiUseEffect : public SkillUseEffect
 {
 public:
-    MultiUseEffect(nl::node src);
+    MultiUseEffect(WzNode src);
 
     void apply(Char& target) const override;
 
@@ -105,7 +105,7 @@ private:
 class ByLevelUseEffect : public SkillUseEffect
 {
 public:
-    ByLevelUseEffect(nl::node src);
+    ByLevelUseEffect(WzNode src);
 
     void apply(Char& target) const override;
 

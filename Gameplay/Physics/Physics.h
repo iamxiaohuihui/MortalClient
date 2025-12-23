@@ -25,7 +25,7 @@ namespace jrc
 class Physics
 {
 public:
-    Physics(nl::node src);
+    Physics(WzNode src);
     Physics();
 
     // Move the specified object over the specified game-time.

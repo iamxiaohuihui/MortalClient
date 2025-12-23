@@ -27,10 +27,10 @@ namespace jrc
 class TwoSpriteButton : public Button
 {
 public:
-    TwoSpriteButton(nl::node nsrc,
-                    nl::node ssrc,
+    TwoSpriteButton(WzNode nsrc,
+                    WzNode ssrc,
                     Point<std::int16_t> position);
-    TwoSpriteButton(nl::node nsrc, nl::node ssrc);
+    TwoSpriteButton(WzNode nsrc, WzNode ssrc);
     TwoSpriteButton(Texture neg,
                     Texture selected,
                     Point<std::int16_t> position);

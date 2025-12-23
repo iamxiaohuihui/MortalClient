@@ -21,7 +21,7 @@
 #include "../../Net/Packets/InventoryPackets.h"
 #include "../Components/MapleButton.h"
 #include "../UI.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
@@ -50,9 +50,9 @@ UIEquipInventory::UIEquipInventory(const Inventory& invent)
     icon_positions[Equipslot::MEDAL] = {10, 58};
     icon_positions[Equipslot::BELT] = {76, 157};
 
-    nl::node base_source = nl::nx::ui["UIWindow2.img"]["Equip"];
-    nl::node source = base_source["character"];
-    nl::node pet_source = base_source["pet"];
+    WzNode base_source = WzFile::ui["UIWindow2.img"]["Equip"];
+    WzNode source = base_source["character"];
+    WzNode pet_source = base_source["pet"];
 
     sprites.emplace_back(source["backgrnd"]);
     sprites.emplace_back(source["backgrnd2"]);

@@ -17,7 +17,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include "Slider.h"
 
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
@@ -35,15 +35,15 @@ Slider::Slider(std::int32_t type,
       scrolling{false},
       enabled{true}
 {
-    nl::node src = nl::nx::ui["Basic.img"]["VScr" + std::to_string(type)];
+    WzNode src = WzFile::ui["Basic.img"]["VScr" + std::to_string(type)];
 
-    nl::node dsrc = src["disabled"];
+    WzNode dsrc = src["disabled"];
 
     d_base = dsrc["base"];
     d_next = dsrc["next"];
     d_prev = dsrc["prev"];
 
-    nl::node esrc = src["enabled"];
+    WzNode esrc = src["enabled"];
 
     base = esrc["base"];
 

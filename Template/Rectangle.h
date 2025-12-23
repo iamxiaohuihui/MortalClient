@@ -25,11 +25,11 @@ template<class T>
 class Rectangle
 {
 public:
-    Rectangle(nl::node nlt, nl::node nrb) : lt(nlt), rb(nrb)
+    Rectangle(WzNode nlt, WzNode nrb) : lt(nlt), rb(nrb)
     {
     }
 
-    Rectangle(nl::node src) : lt(src["lt"]), rb(src["rb"])
+    Rectangle(WzNode src) : lt(src["lt"]), rb(src["rb"])
     {
     }
 

@@ -18,7 +18,7 @@
 #pragma once
 #include "../../Template/nullable_ptr.h"
 #include "Portal.h"
-#include "nlnx/node.hpp"
+#include "Wz.h"
 
 #include <unordered_map>
 
@@ -31,7 +31,7 @@ class MapPortals
 public:
     static void init();
 
-    MapPortals(nl::node source, std::int32_t map_id);
+    MapPortals(WzNode source, std::int32_t map_id);
     MapPortals();
 
     void update(Point<std::int16_t> playerpos);

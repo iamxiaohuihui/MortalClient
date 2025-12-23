@@ -17,8 +17,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #pragma once
 #include "DrawArgument.h"
-#include "nlnx/bitmap.hpp"
-#include "nlnx/node.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
@@ -26,8 +25,8 @@ namespace jrc
 class Texture
 {
 public:
-    Texture(nl::node source);
-    Texture(nl::bitmap bm, Point<std::int16_t> orig);
+    Texture(WzNode source);
+    Texture(WzBitmap m, Point<std::int16_t> orig);
     Texture();
     ~Texture();
 
@@ -41,7 +40,7 @@ public:
     Point<std::int16_t> get_dimensions() const;
 
 private:
-    nl::bitmap bitmap;
+    WzBitmap bitmap;
     Point<std::int16_t> origin;
     Point<std::int16_t> dimensions;
 };

@@ -27,7 +27,7 @@ Animation RegularBullet::get(const Char&, std::int32_t bulletid) const
     return BulletData::get(bulletid).get_animation();
 }
 
-SingleBullet::SingleBullet(nl::node src)
+SingleBullet::SingleBullet(WzNode src)
 {
     ball = src["ball"];
 }
@@ -37,7 +37,7 @@ Animation SingleBullet::get(const Char&, std::int32_t) const
     return ball.animation;
 }
 
-BySkillLevelBullet::BySkillLevelBullet(nl::node src, std::int32_t id)
+BySkillLevelBullet::BySkillLevelBullet(WzNode src, std::int32_t id)
 {
     skillid = id;
 

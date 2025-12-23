@@ -17,13 +17,13 @@
 //////////////////////////////////////////////////////////////////////////////
 #include "SkillSound.h"
 
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
 SingleSkillSound::SingleSkillSound(std::string_view str_id)
 {
-    nl::node sound_src = nl::nx::sound["Skill.img"][str_id];
+    WzNode sound_src = WzFile::sound["Skill.img"][str_id.data()];
 
     use_sound = sound_src["Use"];
     hit_sound = sound_src["Hit"];

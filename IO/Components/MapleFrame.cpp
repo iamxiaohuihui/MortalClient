@@ -17,13 +17,13 @@
 //////////////////////////////////////////////////////////////////////////////
 #include "MapleFrame.h"
 
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 #include <algorithm>
 
 namespace jrc
 {
-MapleFrame::MapleFrame(nl::node src)
+MapleFrame::MapleFrame(WzNode src)
 {
     center = src["c"];
     east = src["e"];

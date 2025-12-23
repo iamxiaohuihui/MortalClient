@@ -30,7 +30,7 @@ namespace jrc
 class TilesObjs
 {
 public:
-    TilesObjs(nl::node src);
+    TilesObjs(WzNode src);
     TilesObjs();
 
     void draw(Point<std::int16_t> view_pos, float alpha) const;
@@ -45,7 +45,7 @@ private:
 class MapTilesObjs
 {
 public:
-    MapTilesObjs(nl::node src);
+    MapTilesObjs(WzNode src);
     MapTilesObjs();
 
     void

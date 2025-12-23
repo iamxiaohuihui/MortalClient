@@ -18,7 +18,7 @@
 #include "UINotice.h"
 
 #include "../Components/MapleButton.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 #include <limits>
 
@@ -26,7 +26,7 @@ namespace jrc
 {
 UINotice::UINotice(utf8_string&& q)
 {
-    nl::node src = nl::nx::ui["Basic.img"]["Notice6"];
+    WzNode src = WzFile::ui["Basic.img"]["Notice6"];
 
     top = src["t"];
     center = src["c"];
@@ -82,7 +82,7 @@ UIYesNo::UIYesNo(utf8_string&& q, std::function<void(bool)> yh)
 {
     std::int16_t below_text = UINotice::box2offset();
 
-    nl::node src = nl::nx::ui["Basic.img"];
+    WzNode src = WzFile::ui["Basic.img"];
 
     buttons[YES] = std::make_unique<MapleButton>(
         src["BtOK4"], Point<std::int16_t>{90, below_text + 1});
@@ -125,7 +125,7 @@ UIEnterNumber::UIEnterNumber(utf8_string&& q,
 
     std::int16_t below_text = UINotice::box2offset();
 
-    nl::node src = nl::nx::ui["Basic.img"];
+    WzNode src = WzFile::ui["Basic.img"];
 
     buttons[OK] = std::make_unique<MapleButton>(
         src["BtOK4"], Point<std::int16_t>{90, below_text + 21});

@@ -28,7 +28,7 @@ class Charset
 public:
     enum Alignment { LEFT, CENTER, RIGHT };
 
-    Charset(nl::node source, Alignment alignment);
+    Charset(WzNode source, Alignment alignment);
     Charset() noexcept;
 
     void draw(std::int8_t character, const DrawArgument& args) const;

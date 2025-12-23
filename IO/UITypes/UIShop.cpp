@@ -26,15 +26,15 @@
 #include "../Components/TwoSpriteButton.h"
 #include "../UI.h"
 #include "UINotice.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
 UIShop::UIShop(const CharLook& in_charlook, const Inventory& in_inventory)
     : char_look(in_charlook), inventory(in_inventory)
 {
-    nl::node src = nl::nx::ui["UIWindow2.img"]["Shop"];
-    nl::node src2 = nl::nx::ui["UIWindow2.img"]["Shop2"];
+    WzNode src = WzFile::ui["UIWindow2.img"]["Shop"];
+    WzNode src2 = WzFile::ui["UIWindow2.img"]["Shop2"];
 
     sprites.emplace_back(src["backgrnd"]);
     sprites.emplace_back(src["backgrnd2"]);
@@ -44,8 +44,8 @@ UIShop::UIShop(const CharLook& in_charlook, const Inventory& in_inventory)
     buttons[SELL_ITEM] = std::make_unique<MapleButton>(src["BtSell"]);
     buttons[EXIT] = std::make_unique<MapleButton>(src["BtExit"]);
 
-    nl::node sellen = src2["TabSell"]["enabled"];
-    nl::node selldis = src2["TabSell"]["disabled"];
+    WzNode sellen = src2["TabSell"]["enabled"];
+    WzNode selldis = src2["TabSell"]["disabled"];
 
     constexpr Point<std::int16_t> stshift{-43, -9};
     for (std::uint16_t i = EQUIP; i <= CASH; ++i) {
@@ -255,7 +255,7 @@ void UIShop::reset(std::int32_t npc_id)
 {
     std::string str_id = string_format::extend_id(npc_id, 7);
     str_id += ".img";
-    npc = nl::nx::npc[str_id]["stand"]["0"];
+    npc = WzFile::npc[str_id]["stand"]["0"];
 
     for (auto& [_, button] : buttons) {
         button->set_state(Button::NORMAL);
@@ -414,7 +414,7 @@ void UIShop::SellItem::draw(Point<std::int16_t> pos) const
     icon.draw(pos + Point<std::int16_t>{0, 32});
     if (show_count) {
         static const Charset countset
-            = {nl::nx::ui["Basic.img"]["ItemNo"], Charset::LEFT};
+            = {WzFile::ui["Basic.img"]["ItemNo"], Charset::LEFT};
         countset.draw(std::to_string(sellable),
                       pos + Point<std::int16_t>{0, 20});
     }

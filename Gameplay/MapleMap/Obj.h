@@ -25,7 +25,7 @@ namespace jrc
 class Obj
 {
 public:
-    Obj(nl::node source);
+    Obj(WzNode source);
 
     //! Update animation.
     void update();

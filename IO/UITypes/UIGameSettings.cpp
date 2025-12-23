@@ -22,14 +22,14 @@
 #include "../../Net/Packets/GameplayPackets.h"
 #include "../Components/MapleButton.h"
 #include "../UI.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
 UIGameSettings::UIGameSettings()
     : UIDragElement<Configuration::PositionOf::GAME_SETTINGS>{DRAG_AREA}
 {
-    nl::node source = nl::nx::ui["UIWindow2.img"]["GameOpt"];
+    WzNode source = WzFile::ui["UIWindow2.img"]["GameOpt"];
 
     sprites.emplace_back(source["backgrnd"]);
     sprites.emplace_back(source["backgrnd2"]);

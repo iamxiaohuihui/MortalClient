@@ -21,7 +21,7 @@
 #include "../../Net/Packets/GameplayPackets.h"
 #include "../../Util/Misc.h"
 #include "../Movement.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 #include <algorithm>
 #include <functional>
@@ -39,9 +39,9 @@ Mob::Mob(std::int32_t oid,
     : MapObject(oid)
 {
     std::string strid = string_format::extend_id(mob_id, 7);
-    const nl::node src = nl::nx::mob[strid + ".img"];
+    WzNode src = WzFile::mob[strid + ".img"];
 
-    nl::node info = src["info"];
+    WzNode info = src["info"];
 
     level = info["level"];
     watk = info["PADamage"];
@@ -53,13 +53,13 @@ Mob::Mob(std::int32_t oid,
     knockback = info["pushed"];
     speed = info["speed"];
     fly_speed = info["flySpeed"];
-    touch_damage = info["bodyAttack"].get_bool();
-    undead = info["undead"].get_bool();
-    no_flip = info["noFlip"].get_bool();
-    not_attack = info["notAttack"].get_bool();
-    can_jump = src["jump"].size() > 0;
-    can_fly = src["fly"].size() > 0;
-    can_move = src["move"].size() > 0 || can_fly;
+    touch_damage = info["bodyAttack"].getBoolean();
+    undead = info["undead"].getBoolean();
+    no_flip = info["noFlip"].getBoolean();
+    not_attack = info["notAttack"].getBoolean();
+    can_jump = src["jump"].getSize() > 0;
+    can_fly = src["fly"].getSize() > 0;
+    can_move = src["move"].getSize() > 0 || can_fly;
 
     if (can_fly) {
         animations[STAND] = src["fly"];
@@ -72,10 +72,10 @@ Mob::Mob(std::int32_t oid,
     animations[HIT] = src["hit1"];
     animations[DIE] = src["die1"];
 
-    name = nl::nx::string["Mob.img"][std::to_string(mob_id)]["name"]
-               .get_string();
+    name = WzFile::string["Mob.img"][std::to_string(mob_id)]["name"]
+               .getString();
 
-    nl::node sndsrc = nl::nx::sound["Mob.img"][strid];
+    WzNode sndsrc = WzFile::sound["Mob.img"][strid];
 
     hit_sound = sndsrc["Damage"];
     die_sound = sndsrc["Die"];

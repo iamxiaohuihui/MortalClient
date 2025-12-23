@@ -17,14 +17,14 @@
 //////////////////////////////////////////////////////////////////////////////
 #include "Tile.h"
 
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
-Tile::Tile(nl::node src, std::string_view ts)
+Tile::Tile(WzNode src, std::string_view ts)
 {
-    nl::node dsrc = nl::nx::map["Tile"][ts][src["u"]][src["no"]];
-    texture = Texture(nl::nx::map["Tile"][ts][src["u"]][src["no"]]);
+    WzNode dsrc = WzFile::map["Tile"][ts.data()][src["u"]][src["no"]];
+    texture = Texture(WzFile::map["Tile"][ts.data()][src["u"]][src["no"]]);
     pos = Point<std::int16_t>(src["x"], src["y"]);
     z = dsrc["z"];
     if (z == 0) {

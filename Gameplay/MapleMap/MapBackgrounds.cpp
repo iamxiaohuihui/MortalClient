@@ -19,18 +19,18 @@
 
 #include "../../Constants.h"
 #include "../../Graphics/GraphicsGL.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
-Background::Background(nl::node src)
+Background::Background(WzNode src)
 {
-    nl::node backsrc = nl::nx::map["Back"];
-    animated = src["ani"].get_bool();
+    WzNode backsrc = WzFile::map["Back"];
+    animated = src["ani"].getBoolean();
     animation
         = backsrc[src["bS"] + ".img"][animated ? "ani" : "back"][src["no"]];
     opacity = src["a"];
-    flipped = src["f"].get_bool();
+    flipped = src["f"].getBoolean();
     cx = src["cx"];
     cy = src["cy"];
     rx = src["rx"];
@@ -143,12 +143,12 @@ void Background::update()
     animation.update();
 }
 
-MapBackgrounds::MapBackgrounds(nl::node src)
+MapBackgrounds::MapBackgrounds(WzNode src)
 {
     std::int16_t no = 0;
-    nl::node back = src[std::to_string(no)];
-    while (back.size() > 0) {
-        bool front = back["front"].get_bool();
+    WzNode back = src[std::to_string(no)];
+    while (back.getSize() > 0) {
+        bool front = back["front"].getBoolean();
         if (front) {
             foregrounds.push_back(back);
         } else {
@@ -159,7 +159,7 @@ MapBackgrounds::MapBackgrounds(nl::node src)
         back = src[std::to_string(no)];
     }
 
-    black = src["0"]["bS"].get_string().empty();
+    black = src["0"]["bS"].getString().empty();
 }
 
 MapBackgrounds::MapBackgrounds() = default;

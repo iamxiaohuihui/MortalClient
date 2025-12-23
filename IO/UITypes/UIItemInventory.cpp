@@ -23,7 +23,7 @@
 #include "../Components/MapleButton.h"
 #include "../Components/TwoSpriteButton.h"
 #include "../UI.h"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
@@ -32,7 +32,7 @@ UIItemInventory::UIItemInventory(const Inventory& invent)
           172, 20}},
       inventory{invent}
 {
-    nl::node src = nl::nx::ui["UIWindow2.img"]["Item"];
+    WzNode src = WzFile::ui["UIWindow2.img"]["Item"];
 
     sprites.emplace_back(src["backgrnd"]);
     sprites.emplace_back(src["backgrnd2"]);
@@ -44,8 +44,8 @@ UIItemInventory::UIItemInventory(const Inventory& invent)
     projectile = src["activeIcon"];
 
     auto tab_src = src["Tab"];
-    nl::node tab_en = tab_src["enabled"];
-    nl::node tab_dis = tab_src["disabled"];
+    WzNode tab_en = tab_src["enabled"];
+    WzNode tab_dis = tab_src["disabled"];
 
     buttons[BT_TAB_EQUIP] = std::make_unique<TwoSpriteButton>(
         tab_dis["0"], tab_en["0"], Point<std::int16_t>{-1, -4});

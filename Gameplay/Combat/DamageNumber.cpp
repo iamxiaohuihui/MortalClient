@@ -18,8 +18,7 @@
 #include "DamageNumber.h"
 
 #include "../../Constants.h"
-#include "nlnx/node.hpp"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
@@ -156,17 +155,17 @@ std::int16_t DamageNumber::row_height(bool critical)
 void DamageNumber::init()
 {
     charsets[NORMAL].set(
-        false, nl::nx::effect["BasicEff.img"]["NoRed1"], Charset::LEFT);
+        false, WzFile::effect["BasicEff.img"]["NoRed1"], Charset::LEFT);
     charsets[NORMAL].set(
-        true, nl::nx::effect["BasicEff.img"]["NoRed0"], Charset::LEFT);
+        true, WzFile::effect["BasicEff.img"]["NoRed0"], Charset::LEFT);
     charsets[CRITICAL].set(
-        false, nl::nx::effect["BasicEff.img"]["NoCri1"], Charset::LEFT);
+        false, WzFile::effect["BasicEff.img"]["NoCri1"], Charset::LEFT);
     charsets[CRITICAL].set(
-        true, nl::nx::effect["BasicEff.img"]["NoCri0"], Charset::LEFT);
+        true, WzFile::effect["BasicEff.img"]["NoCri0"], Charset::LEFT);
     charsets[TO_PLAYER].set(
-        false, nl::nx::effect["BasicEff.img"]["NoViolet1"], Charset::LEFT);
+        false, WzFile::effect["BasicEff.img"]["NoViolet1"], Charset::LEFT);
     charsets[TO_PLAYER].set(
-        true, nl::nx::effect["BasicEff.img"]["NoViolet0"], Charset::LEFT);
+        true, WzFile::effect["BasicEff.img"]["NoViolet0"], Charset::LEFT);
 }
 
 std::array<BoolPair<Charset>, DamageNumber::NUM_TYPES> DamageNumber::charsets;

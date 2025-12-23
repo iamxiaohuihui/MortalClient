@@ -22,7 +22,7 @@
 
 namespace jrc
 {
-Frame::Frame(nl::node src) : texture{src}, bounds{src}
+Frame::Frame(WzNode src) : texture{src}, bounds{src}
 {
     head = src["head"];
     delay = src["delay"];
@@ -32,8 +32,8 @@ Frame::Frame(nl::node src) : texture{src}, bounds{src}
         no_delay = true;
     }
 
-    bool has_a0 = src["a0"].data_type() == nl::node::type::integer;
-    bool has_a1 = src["a1"].data_type() == nl::node::type::integer;
+    bool has_a0 = src["a0"].getNodeType() == WzNode::NodeType::INTEGER;
+    bool has_a1 = src["a1"].getNodeType() == WzNode::NodeType::INTEGER;
     if (has_a0 && has_a1) {
         opacities = {src["a0"], src["a1"]};
     } else if (has_a0) {
@@ -46,8 +46,8 @@ Frame::Frame(nl::node src) : texture{src}, bounds{src}
         opacities = {255, 255};
     }
 
-    bool has_z0 = src["z0"].data_type() == nl::node::type::integer;
-    bool has_z1 = src["z1"].data_type() == nl::node::type::integer;
+    bool has_z0 = src["z0"].getNodeType() == WzNode::NodeType::INTEGER;
+    bool has_z1 = src["z1"].getNodeType() == WzNode::NodeType::INTEGER;
     if (has_z0 && has_z1) {
         scales = {src["z0"], src["z1"]};
     } else if (has_z0) {
@@ -132,16 +132,17 @@ float Frame::scale_step(std::uint16_t timestep) const
     return timestep * static_cast<float>(scales.second - scales.first) / delay;
 }
 
-Animation::Animation(nl::node src) : finished(false)
+Animation::Animation(WzNode src) : finished(false)
 {
-    bool is_texture = src.data_type() == nl::node::type::bitmap;
+    bool is_texture = src.getNodeType() == WzNode::NodeType::BITMAP;
     if (is_texture) {
         frames.emplace_back(src);
     } else {
         std::vector<std::int16_t> frame_ids;
-        frame_ids.reserve(src.size());
-        for (auto sub : src) {
-            if (sub.data_type() == nl::node::type::bitmap) {
+        frame_ids.reserve(src.getSize());
+        for (auto s_sub = src.begin(); s_sub != src.end() ; ++s_sub ) {
+            auto sub = (*s_sub).second;
+            if (sub.getNodeType() == WzNode::NodeType::BITMAP) {
                 auto fid = string_conversion::or_default<std::int16_t>(
                     sub.name(), -1);
                 if (fid >= 0) {
@@ -161,7 +162,7 @@ Animation::Animation(nl::node src) : finished(false)
     }
 
     animated = frames.size() > 1;
-    zigzag = src["zigzag"].get_bool();
+    zigzag = src["zigzag"].getBoolean();
     repeat = src["repeat"];
 
     reset();

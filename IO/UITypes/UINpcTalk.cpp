@@ -19,14 +19,13 @@
 
 #include "../../Net/Packets/NpcInteractionPackets.h"
 #include "../Components/MapleButton.h"
-#include "nlnx/node.hpp"
-#include "nlnx/nx.hpp"
+#include "Wz.h"
 
 namespace jrc
 {
 UINpcTalk::UINpcTalk()
 {
-    nl::node src = nl::nx::ui["UIWindow2.img"]["UtilDlgEx"];
+    WzNode src = WzFile::ui["UIWindow2.img"]["UtilDlgEx"];
 
     top = src["t"];
     fill = src["c"];
@@ -87,11 +86,11 @@ void UINpcTalk::change_text(std::int32_t npc_id,
                 Text::CENTER,
                 Text::WHITE,
                 utf8_string{
-                    nl::nx::string["Npc.img"][str_id]["name"].get_string()}};
+                    WzFile::string["Npc.img"][str_id]["name"].getString()}};
 
         str_id.insert(0, 7 - str_id.length(), '0');
         str_id += ".img";
-        speaker = nl::nx::npc[str_id]["stand"]["0"];
+        speaker = WzFile::npc[str_id]["stand"]["0"];
     } else {
         speaker = {};
         name.change_text(u8"");

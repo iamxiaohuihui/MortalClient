@@ -46,7 +46,7 @@ Configuration::~Configuration() noexcept
 
 void Configuration::load() noexcept(false)
 {
-    auto settings = cpptoml::parse_file("settings.toml");
+    auto settings = cpptoml::parse_file("/Users/zhangchenghui/workspace/cpp_space/game/maplestory/MortalClient/settings.toml");
 
     auto network_table = settings->get_table("network");
     auto video_table = settings->get_table("video");

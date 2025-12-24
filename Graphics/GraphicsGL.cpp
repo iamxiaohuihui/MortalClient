@@ -24,6 +24,8 @@
 
 #include <algorithm>
 
+using namespace tiny_utf8;
+
 namespace jrc
 {
 Rectangle<std::int16_t> GraphicsGL::screen;

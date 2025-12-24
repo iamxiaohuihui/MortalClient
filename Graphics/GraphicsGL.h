@@ -33,6 +33,8 @@
 #include <unordered_map>
 #include <vector>
 
+using namespace tiny_utf8;
+
 namespace jrc
 {
 //! Graphics engine which uses OpenGL.

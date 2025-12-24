@@ -39,7 +39,7 @@ Error init()
         return error;
     }
 
-    WzFile::loadAll("./");
+    WzFile::loadAll("/Users/zhangchenghui/workspace/cpp_space/game/maplestory/Data/");
     // if (Error error = NxFiles::init(); error) {
     //     return error;
     // }

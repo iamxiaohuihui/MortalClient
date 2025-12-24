@@ -22,7 +22,7 @@
 #include <cstdint>
 #include <map>
 #include <vector>
-
+using namespace tiny_utf8;
 namespace jrc
 {
 class Text

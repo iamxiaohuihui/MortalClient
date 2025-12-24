@@ -32,7 +32,7 @@ endif()
 if(UNIX AND NOT APPLE)
     SET(REQUIRED_FLAGS "-std=c++17 -fcolor-diagnostics -pipe -DASIO_STANDALONE -DGLEW_NO_GLU -DBOOST_BIMAP_DISABLE_SERIALIZATION -lglut -lGL -lSDL2 -lSDL2_mixer -ldl -lXinerama -lXext -lXrandr -lXi -lXcursor -lX11 -lXxf86vm -pthread -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-align -Wstrict-prototypes -Werror-implicit-function-declaration -Wformat=2 -Wnull-dereference -Wstrict-overflow=5 -Wno-unused-command-line-argument -Wno-unused-private-field -Wno-narrowing")
 elseif(APPLE)
-    SET(REQUIRED_FLAGS "-std=c++17 -fcolor-diagnostics -nostdinc++ -I/opt/homebrew/Cellar/llvm/20.1.4/include/c++/v1 -L/opt/homebrew/Cellar/llvm/20.1.4/lib -Wl,-rpath,/opt/homebrew/Cellar/llvm/20.1.4/lib -include boost_compat.h -pipe -DASIO_STANDALONE -DGLEW_NO_GLU -DBOOST_BIMAP_DISABLE_SERIALIZATION -DBOOST_NO_CXX98_FUNCTION_BASE -DBOOST_NO_STD_UNARY_FUNCTION -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo -framework Metal -ldl -pthread -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-align -Wstrict-prototypes -Werror-implicit-function-declaration -Wformat=2 -Wnull-dereference -Wstrict-overflow=5 -Wno-unused-private-field -Wno-unused-command-line-argument -Wno-narrowing")
+    SET(REQUIRED_FLAGS "-std=c++17 -fcolor-diagnostics -nostdinc++ -I/opt/homebrew/Cellar/llvm/20.1.4/include/c++/v1 -L/opt/homebrew/Cellar/llvm/20.1.4/lib -Wl,-rpath,/opt/homebrew/Cellar/llvm/20.1.4/lib -include boost_compat.h -pipe -DASIO_STANDALONE -DGLEW_NO_GLU -DBOOST_BIMAP_DISABLE_SERIALIZATION -DBOOST_NO_CXX98_FUNCTION_BASE -DBOOST_NO_STD_UNARY_FUNCTION -DTINY_UTF8_GLOBAL_NAMESPACE -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo -framework Metal -ldl -lz -pthread -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-align -Wstrict-prototypes -Werror-implicit-function-declaration -Wformat=2 -Wnull-dereference -Wstrict-overflow=5 -Wno-unused-private-field -Wno-unused-command-line-argument -Wno-narrowing")
 elseif(WIN32)
     SET(REQUIRED_FLAGS "/std:c++17 /GX /D ASIO_STANDALONE /D GLEW_NO_GLU /D BOOST_BIMAP_DISABLE_SERIALIZATION /W4 -Wshadow -Wpointer-arith -Wcast-align -Wstrict-prototypes -Werror-implicit-function-declaration -Wformat=2 -Wnull-dereference -Wstrict-overflow=5 -Wno-unused-private-field -Wno-unused-command-line-argument -Wno-narrowing")
 else()
@@ -169,8 +169,7 @@ SET(SOURCE_FILES ${Root_CPP}
                  ${Packets_H}
                  ${Helpers_H}
                  "./libs/cpptoml/include/cpptoml.h"
-                 "./libs/pcg-cpp/include/pcg_random.hpp"
-                 "./libs/tinyutf8/include/tinyutf8.h")
+                 "./libs/pcg-cpp/include/pcg_random.hpp")
 
 # Adding file globs created above as libraries
 add_library(Audio         ${Audio_CPP})
@@ -196,7 +195,7 @@ add_library(Helpers       ${Helpers_CPP})
 # Just the one file
 add_library(Configuration "Configuration.cpp")
 
-# add_library(tinyutf8      "./libs/tinyutf8/lib/include/tinyutf8.")
+# add_library(tinyutf8      "./libs/tinyutf8/tinyutf8.cpp")
 
 # Target executable
 add_executable(JourneyClient ${SOURCE_FILES})
@@ -239,7 +238,7 @@ target_link_libraries(JourneyClient Configuration)
 
 # target_link_libraries(JourneyClient wz)
 
-target_link_libraries(JourneyClient tinyutf8)
+# target_link_libraries(JourneyClient tinyutf8)
 
 # Link in shared object files
 if(UNIX AND NOT APPLE)
@@ -252,10 +251,11 @@ elseif(APPLE)
     target_link_libraries(JourneyClient "/opt/homebrew/Cellar/glew/2.2.0_1/lib/libGLEW.dylib")
     target_link_libraries(JourneyClient "-framework Metal")
     target_link_libraries(JourneyClient "-framework QuartzCore")
-    target_link_libraries(JourneyClient "./libs/WzTools/build/libWzTools.a")
+    target_link_libraries(JourneyClient "/Users/zhangchenghui/workspace/cpp_space/game/maplestory/WzTools/build/libWzTools.a")
     target_link_libraries(JourneyClient "/opt/homebrew/Cellar/glfw/3.4/lib/libglfw3.a")
     target_link_libraries(JourneyClient "/opt/homebrew/Cellar/sdl2/2.32.6/lib/libSDL2.dylib")
     target_link_libraries(JourneyClient "/opt/homebrew/Cellar/sdl2_mixer/2.8.1_1/lib/libSDL2_mixer.dylib")
+    # target_link_libraries(JourneyClient "/opt/homebrew/Cellar/zlib/1.3/lib/libz.dylib")
     # target_link_libraries(nlnx          "/opt/homebrew/Cellar/lz4/1.10.0/lib/liblz4.dylib")
 elseif(WIN32)
     INCLUDE(${CMAKE_ROOT}/Modules/FindOpenGL.cmake)
@@ -292,5 +292,5 @@ include_directories("/opt/homebrew/Cellar/sdl2/2.32.6/include/SDL2")
 include_directories("/opt/homebrew/Cellar/sdl2_mixer/2.8.1_1/include/SDL2")
 include_directories("./libs/cpptoml/include")
 include_directories("./libs/pcg-cpp/include")
-include_directories("./libs/tinyutf8/include")
-include_directories("./libs/WzTools")
+include_directories("./libs/tinyutf8/include/tinyutf8")
+include_directories("/Users/zhangchenghui/workspace/cpp_space/game/maplestory/WzTools")
